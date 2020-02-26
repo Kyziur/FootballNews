@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" Condition="'$(Configuration)' == 'Debug'" />    
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
   </ItemGroup>
@@ -28,41 +29,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation\additional-methods.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation\additional-methods.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation\jquery.validate.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation\jquery.validate.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation\LICENSE.md" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\jquery-validation-unobtrusive\LICENSE.txt" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.bundle.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.bundle.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.bundle.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.bundle.min.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\bootstrap.min.js.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\src\bootstrap\LICENSE" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-grid.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-grid.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-grid.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-grid.min.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-reboot.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-reboot.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-reboot.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap-reboot.min.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\bootstrap.min.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\src\bootstrap\LICENSE" />
+    <ProjectReference Include="..\FootballNews.Core\FootballNews.Core.csproj" />
+    <ProjectReference Include="..\FootballNews.Infrastructure\FootballNews.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

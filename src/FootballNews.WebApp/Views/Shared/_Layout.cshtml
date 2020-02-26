@@ -8,28 +8,24 @@
     <link rel="stylesheet" href="~/css/dist/index.min.css"/>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FootballNews.WebApp</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <partial name="_LoginPartial"/>
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                </ul>
+<header class="header-image">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-5 px-md-4 mb-3 border-bottom shadow-none">
+        <div class="my-0">
+            <h5 class=" font-weight-normal">
+                <a href="~/" class="text-light">Company logo</a>
+            </h5>
+        </div>
+        <div class="company-name-wrapper">
+            <div class="company-name">
+                <h2 class="font-weight-bold">Piłkarska Zajawka</h2>
             </div>
         </div>
-    </nav>
+        <partial name="_LoginPartial"/>
+    </div>
 </header>
+<section role="navigation" class="mb-2">
+    <partial name="_MenuPartial" />
+</section>
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()
@@ -41,9 +37,18 @@
         &copy; 2020 - FootballNews.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
+
+
 <script src="~/js/dist/jquery/jquery.min.js"></script>
 <script src="~/js/dist/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="~/js/index.min.js" asp-append-version="true"></script>
 @RenderSection("Scripts", false)
+
+<script>
+let barContainer = document.getElementById('bar-containerJs');
+barContainer.addEventListener('click', function(){
+    this.classList.toggle('change');
+});
+</script>
 </body>
 </html>

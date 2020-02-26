@@ -3,5 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="../FootballNews.Core/FootballNews.Core.csproj" />
+  </ItemGroup>
 </Project>

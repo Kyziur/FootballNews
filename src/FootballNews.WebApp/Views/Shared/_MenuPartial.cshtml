@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<div class="d-flex align-items-center border-top border-bottom p-2 shadow">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <partial name="_SideMenuPartial"/>
+    }
+    <div class="justify-content-center d-flex w-100">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="p-2 text-dark" href="#">MenuItem1ForLogged</a>
+            <a class="p-2 text-dark" href="#">MenuItem2ForLogged</a>
+            <a class="p-2 text-dark" href="#">MenuItem3ForLogged</a>
+            <a class="p-2 text-dark" href="#">MenuItem4ForLogged</a>
+            <a class="p-2 text-dark" href="#">MenuItem5ForLogged</a>
+        }
+        else
+        {
+            <a class="p-2 text-dark" href="#">MenuItem1</a>
+            <a class="p-2 text-dark" href="#">MenuItem2</a>
+            <a class="p-2 text-dark" href="#">MenuItem3</a>
+            <a class="p-2 text-dark" href="#">MenuItem4</a>
+            <a class="p-2 text-dark" href="#">MenuItem5</a>
+        }
+    </div>
+</div>
+<div></div>

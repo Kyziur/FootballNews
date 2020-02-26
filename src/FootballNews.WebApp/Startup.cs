@@ -1,3 +1,5 @@
+using FootballNews.Core.Repositories;
+using FootballNews.Infrastructure.Repositories;
 using FootballNews.WebApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,8 +28,11 @@ namespace FootballNews.WebApp
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            
+            //Registering repositories in dependency injection container (Read about: DI (dependency injection) and IoC (Inversion of Control)
+            services.AddScoped<IArticleRepository, ArticleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,45 +1,10 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
+﻿html {
   font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
@@ -68,4 +33,70 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.header-image { 
+  height: 100%;
+  width: 100%;
+  /*background-image: url("https://images.unsplash.com/photo-1540753003857-32db1552eead?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1490&q=80");*/
+  background: rgb(2,46,85);
+  background: linear-gradient(90deg, rgba(2,46,85,1) 0%, rgba(8,109,54,1) 33%, rgba(9,121,56,1) 75%, rgba(9,121,118,1) 98%);
+  background-size:cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.company-name {
+  color: #DFFBE5;
+  opacity: 1;
+  padding: 5px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.company-name > h2 {
+  margin: 0;
+}
+
+.bar-container {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: #333;
+  margin: 6px 0;
+  transition: 0.4s;
+}
+
+/* MODAL FADE LEFT */
+.modal.fade:not(.in).left .modal-dialog {
+  -webkit-transform: translate3d(-25%, 0, 0);
+  transform: translate3d(-25%, 0, 0);
+}
+.modal.fade:not(.in).right .modal-dialog {
+  -webkit-transform: translate3d(25%, 0, 0);
+  transform: translate3d(25%, 0, 0);
+}
+.modal.fade:not(.in).bottom .modal-dialog {
+  -webkit-transform: translate3d(0, 25%, 0);
+  transform: translate3d(0, 25%, 0);
+}
+
+.modal.left .modal-dialog {
+  position:absolute;
+  top:0;
+  left:0;
+  margin: 0 0 0 50px;
+}
+
+.modal.left .modal-dialog.modal-sm {
+  max-width:300px;
+}
+
+.modal.left .modal-content {
+  min-height:100vh;
+  border:0;
 }
