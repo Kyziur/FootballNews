@@ -4,7 +4,7 @@ using FootballNews.Core.Domain;
 
 namespace FootballNews.Core.Repositories
 {
-    public interface ITagRepository : IRepository
+    public interface ITagRepository
     {
         Task<IEnumerable<Tag>> GetAll();
     }

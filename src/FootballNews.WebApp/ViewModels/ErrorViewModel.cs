@@ -1,4 +1,4 @@
-namespace FootballNews.WebApp.Models
+namespace FootballNews.WebApp.ViewModels
 {
     public class ErrorViewModel
     {

@@ -100,3 +100,12 @@ body {
   min-height:100vh;
   border:0;
 }
+
+.bg-deep-green{
+  background-color: rgb(14, 54, 27) !important;
+}
+
+.img-table{
+  max-height: 300px;
+  max-width: 300px;
+}

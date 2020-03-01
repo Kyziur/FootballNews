@@ -5,7 +5,7 @@ using FootballNews.Core.Domain;
 
 namespace FootballNews.Core.Repositories
 {
-    public interface IArticleRepository : IRepository
+    public interface IArticleRepository
     {
         Task<IEnumerable<Article>> GetAll();
         Task<Article> GetById(Guid id);

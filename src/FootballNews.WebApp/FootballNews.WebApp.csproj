@@ -32,5 +32,12 @@
     <ProjectReference Include="..\FootballNews.Core\FootballNews.Core.csproj" />
     <ProjectReference Include="..\FootballNews.Infrastructure\FootballNews.Infrastructure.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\League\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\League\Get.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\League\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\League\Update.cshtml" />
+  </ItemGroup>
 
 </Project>

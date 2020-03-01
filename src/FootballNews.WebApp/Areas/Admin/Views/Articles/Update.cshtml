@@ -1,0 +1,55 @@
+﻿@model ArticleModel
+@{
+    ViewData["Title"] = "Edit article";
+    Layout = "_Layout";
+}
+<div class="container shadow">
+    <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white" xmlns="http://www.w3.org/1999/html">
+        <header class="">
+            <h2>Edit</h2>
+        </header>
+        @* <div><a class="btn btn-md btn-success text-white" asp-area="Admin" asp-controller="Articles" asp-action="Create"> *@
+        @*    <div class="d-inline-block mr-1"><i class="fas fa-plus"></i></div>Create *@
+        @* </a></div> *@
+    </div>
+    <form asp-area="Admin" asp-controller="Articles" asp-action="Create" class="container">
+        <div class="form-group">
+            <label asp-for="Title">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Input title"/>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content">Article content</label>
+            <textarea asp-for="Content" class="summernote"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="custom-file">
+                    <label asp-for="Image">Choose picture</label>
+                    <input accept="image/png, image/jpeg" type="file" class="custom-file-input" asp-for="Image">
+                    <label class="custom-file-label" asp-for="Image">Choose picture</label>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="form-group col-md-4">
+                <label for="">Select tags</label>
+                <select name="" id="" class="selectpicker" multiple="multiple" data-actions-box="true" data-live-search="true">
+                    <option>Cos1</option>
+                    <option>Cos2</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_SelectPickerScriptPartial"/>
+
+    <script>
+        $(document).ready(function() {
+          $('.summernote').summernote();
+        });
+    </script>
+}

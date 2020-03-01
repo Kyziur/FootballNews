@@ -60,9 +60,10 @@ namespace FootballNews.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("Admin", pattern: "{area:exists}/{controller=Articles}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Home}/{action=Index}/{id?}");
+                    "{controller=Articles}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

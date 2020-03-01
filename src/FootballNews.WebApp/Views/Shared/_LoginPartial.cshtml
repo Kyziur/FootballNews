@@ -6,7 +6,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <a class="text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    <form class="" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+    <form class="" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Articles", new {area = ""})">
         <button type="submit" class="btn btn-outline-light">Logout</button>
     </form>
 }
