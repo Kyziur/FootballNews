@@ -5,7 +5,7 @@ namespace FootballNews.Core.Domain
 {
     public class Comment
     {
-        private ISet<string> _likedBy = new HashSet<string>();
+        private IList<string> _likedBy = new List<string>();
 
         protected Comment()
         {

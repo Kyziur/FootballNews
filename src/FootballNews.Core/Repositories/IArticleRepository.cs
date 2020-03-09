@@ -9,6 +9,7 @@ namespace FootballNews.Core.Repositories
     {
         Task<IEnumerable<Article>> GetAll();
         Task<Article> GetById(Guid id);
+        Task<Article> GetByTitle(string title);
         Task Create(Article article);
         Task Update(Article article);
         Task Delete(Article article);

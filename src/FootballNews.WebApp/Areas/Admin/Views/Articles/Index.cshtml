@@ -1,5 +1,5 @@
 ﻿@using FootballNews.WebApp.Extensions
-@model IEnumerable<ArticleModel>
+@model IEnumerable<IndexArticleModel>
 @{
     ViewData["Title"] = "Articles";
 }
@@ -23,6 +23,7 @@
             <th scope="col">Title</th>
             <th scope="col">Content</th>
             <th scope="col">Image</th>
+            <th scope="col">Tags</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -30,9 +31,24 @@
         @foreach (var article in Model)
         {
             <tr>
-                <th scope="row">@article.Title</th>
-                <td>@article.Content.LimitOnWordBoundary(130)</td>
-                <td><div class=""><img src="https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=687&q=80" alt="" class="img-thumbnail img-table"></div></td>
+                <td>@article.Title</td>
+                <td class="td-wrapped">@article.Content.RemoveHtml().LimitOnWordBoundary(200)</td>
+                <td>
+                    <div class="">
+                        @if (article.ImageAsBytes != null && article.ImageAsBytes.Length > 0)
+                        {
+                            <img src="data:image/jpg;base64, @Convert.ToBase64String(article.ImageAsBytes)" alt="" class="img-thumbnail img-table">
+                        }
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex flex-column">
+                        @foreach (var tag in article.Tags)
+                        {
+                            <span class="border-bottom text-center">@tag</span>
+                        }
+                    </div>
+                </td>
                 <td>
                     <div class="btn-group text-white" role="group" aria-label="Actions">
                         <a class="btn btn-primary" asp-area="Admin" asp-controller="Articles" asp-action="Update" asp-route-id="@article.Id"><i class="fas fa-edit"></i>Edit</a>

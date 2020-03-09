@@ -1,6 +1,7 @@
+using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
+using FootballNews.Infrastructure.Data;
 using FootballNews.Infrastructure.Repositories;
-using FootballNews.WebApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,16 +24,18 @@ namespace FootballNews.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DatabaseContext>().AddDefaultUI().AddDefaultTokenProviders();
+            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             
             //Registering repositories in dependency injection container (Read about: DI (dependency injection) and IoC (Inversion of Control)
             services.AddScoped<IArticleRepository, ArticleRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,10 +63,10 @@ namespace FootballNews.WebApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("Admin", pattern: "{area:exists}/{controller=Articles}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("Admin","Admin","Admin/{controller=Articles}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Articles}/{action=Index}/{id?}");
+                    "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

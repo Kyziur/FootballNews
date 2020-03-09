@@ -1,4 +1,6 @@
-﻿namespace FootballNews.WebApp.Extensions
+﻿using System.Text.RegularExpressions;
+
+namespace FootballNews.WebApp.Extensions
 {
     public static class StringExtensions
     {
@@ -21,5 +23,11 @@
                 }
             }
         }
+
+        public static string RemoveHtml(this string text)
+        {
+            return Regex.Replace(text, "<.*?>", string.Empty);
+        }
+
     }
 }

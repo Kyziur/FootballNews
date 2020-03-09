@@ -1,32 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
-using FootballNews.WebApp.Areas.Admin.ViewModels;
+using FootballNews.WebApp.Areas.Admin.ViewModels.Article;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FootballNews.WebApp.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ArticlesController : BaseController
     {
         private readonly IArticleRepository _articleRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public ArticlesController(IArticleRepository articleRepository)
+        public ArticlesController(IArticleRepository articleRepository, ITagRepository tagRepository)
         {
             _articleRepository = articleRepository;
+            _tagRepository = tagRepository;
         }
 
+        private FormFile GetFormFileFromBytes(byte[] bytes, string imageName)
+        {
+            using var stream = new MemoryStream(bytes);
+            return new FormFile(stream, 0, bytes.Length, null ,imageName );
+        }
+        
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var articles = await _articleRepository.GetAll();
-            var model = articles.Select(x => new ArticleModel
+            var model = articles.Select(x => new IndexArticleModel
             {
                 Id = x.Id,
                 Title = x.Title,
                 Content = x.Content,
-                Image = x.Image
+                ImageAsBytes = x.Image,
+                Tags = x.ArticlesTags.Select(t => t.Tag.Name).ToList()
             });
             
             return View(model);
@@ -35,9 +49,16 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            var tags = await _tagRepository.GetAll();
+            var model = new ArticleModel
+            {
+                Tags = tags.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
+            };
+            
+            return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create(ArticleModel model)
         {
             if (!ModelState.IsValid)
@@ -45,24 +66,78 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 return View(model);
             }
             
-            var article = new Article(model.Title, model.Content);
+            var article = new Article(Guid.NewGuid(),model.Title, model.Content);
             
+            if (model.Image != null)
+            {
+                await using var stream = new MemoryStream();
+                await model.Image.CopyToAsync(stream);
+                article.SetImage(stream.ToArray(), Path.GetRandomFileName());
+            }
+
+            var tags = await GetTagsFromModel(model);
+            article.SetTags(tags);
+            
+            await _articleRepository.Create(article);
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task<IEnumerable<Tag>> GetTagsFromModel(ArticleModel model)
+        {
+            if (model.SelectedTagsIds is null)
+                return null;
+
+            var selectedTagsIds = model.SelectedTagsIds.Select(Guid.Parse);
+            var tags = await _tagRepository.GetByIds(selectedTagsIds);
+            return tags;
+        }
+        
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)
         {
-            return View();
+            var tags = await _tagRepository.GetAll();
+            var article = await _articleRepository.GetById(id);
+            var model = new ArticleModel
+            {
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                ImageAsBytes = article.Image, 
+                Tags = tags.Select(t => new SelectListItem
+                {
+                    Text = t.Name,
+                    Value = t.Id.ToString(),
+                    Selected = article.ArticlesTags.Any(x => x.TagId == t.Id)
+                }).ToList()
+            };
+
+            return View(model);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Update(ArticleModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
+            var article = await _articleRepository.GetById(model.Id);
+
+            if (model.Image != null)
+            {
+                await using var stream = new MemoryStream();
+                await model.Image.CopyToAsync(stream);
+                article.SetImage(stream.ToArray(), Path.GetRandomFileName());
+            }
+            
+            article.SetTitle(model.Title);
+            article.SetContent(model.Content);
+            
+            var tags = await GetTagsFromModel(model);
+            article.SetTags(tags);
+            
+            await _articleRepository.Update(article);
             
             return RedirectToAction(nameof(Index));
         }
@@ -70,6 +145,13 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var article = await _articleRepository.GetById(id);
+            if (article is null)
+            {
+                return BadRequest();
+            }
+
+            await _articleRepository.Delete(article);
             return Ok();
         }
         

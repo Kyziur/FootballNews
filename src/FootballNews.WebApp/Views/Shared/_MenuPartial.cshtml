@@ -1,28 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <div class="d-flex align-items-center border-top border-bottom p-2 shadow">
     @if (SignInManager.IsSignedIn(User))
     {
         <partial name="_SideMenuPartial"/>
     }
-    <div class="justify-content-center d-flex w-100">
+    <div class="justify-content-center d-flex w-100 navigation-bar">
+        <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Main page</a>
         @if (SignInManager.IsSignedIn(User))
         {
-            <a class="p-2 text-dark" href="#">MenuItem1ForLogged</a>
-            <a class="p-2 text-dark" href="#">MenuItem2ForLogged</a>
-            <a class="p-2 text-dark" href="#">MenuItem3ForLogged</a>
-            <a class="p-2 text-dark" href="#">MenuItem4ForLogged</a>
-            <a class="p-2 text-dark" href="#">MenuItem5ForLogged</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Articles</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tags</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Leagues" asp-action="Index">Leagues</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="" asp-action="">Teams</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="" asp-action="">Games</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="" asp-action="">Administration</a>
         }
         else
         {
-            <a class="p-2 text-dark" href="#">MenuItem1</a>
-            <a class="p-2 text-dark" href="#">MenuItem2</a>
-            <a class="p-2 text-dark" href="#">MenuItem3</a>
-            <a class="p-2 text-dark" href="#">MenuItem4</a>
-            <a class="p-2 text-dark" href="#">MenuItem5</a>
+            <a class="menu-item" href="#">MenuItem1</a>
+            <a class="menu-item" href="#">MenuItem2</a>
+            <a class="menu-item" href="#">MenuItem3</a>
+            <a class="menu-item" href="#">MenuItem4</a>
+            <a class="menu-item" href="#">MenuItem5</a>
         }
     </div>
 </div>

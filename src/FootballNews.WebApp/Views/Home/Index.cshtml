@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Article>
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<div>
+    <div class="d-flex">
+        <section class="flex-column col-lg-9 justify-content-center">
+            @foreach (var article in Model)
+            {
+                <article class="news-list__item mt-4 p-1 card">
+                    <div class="row no-gutters">
+                        <div class="col-4 p-0 align-middle mt-3">
+                            <img style="max-width: 100%; max-height: 100%" src="data:image/jpg;base64, @Convert.ToBase64String(Model.First(x => x.Image != null).Image)" alt="">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <div class="card-title justify-content-between d-flex">
+                                    <span>
+                                        <h5>@article.Title</h5>
+                                    </span>
+                                    <span class="card-text ml-2">
+                                        <small class="text-muted">here will be some info</small>
+                                    </span>
+                                </div>
+                                <p class="card-text">@Html.Raw(article.Content)</p>
+                                <div>
+                                    <a asp-controller="Home" asp-action="Get" asp-route-title="@article.Title" class="btn btn-outline-primary">Continue reading</a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row mt-4 tag-list">
+                                @foreach (var tag in article.Tags)
+                                {
+                                    <a asp-controller="Home" asp-action="Index" asp-route-tag="@tag.Name" class="tag-list__item">@tag.Name</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            }
+        </section>
+        <aside class="col-md-3">
+            @await Component.InvokeAsync("Tags")
+        </aside>
+    </div>
+</div>

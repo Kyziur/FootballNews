@@ -29,18 +29,18 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            var league = await _leagueRepository.GetById(id);
-            if (league is null)
-            {
-                return NotFound();
-            }
-
-            var model = new LeagueModel {Id = league.Id, Name = league.Name};
-            return View(model);
-        }
+        // [HttpGet]
+        // public async Task<IActionResult> Get(Guid id)
+        // {
+        //     var league = await _leagueRepository.GetById(id);
+        //     if (league is null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     var model = new LeagueModel {Id = league.Id, Name = league.Name};
+        //     return View(model);
+        // }
 
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -60,7 +60,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             await _leagueRepository.Create(league);
             
             //redirect to created league or to index action
-            return RedirectToAction(nameof(Get), new {id = league.Id});
+            return RedirectToAction(nameof(Index), new {id = league.Id});
         }
 
         [HttpGet]
