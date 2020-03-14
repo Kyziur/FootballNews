@@ -66,5 +66,27 @@ namespace FootballNews.Core.Domain
             var articleTags = tags?.Select(t => new ArticleTag(this, t)).ToList();
             _articleTags = articleTags;
         }
+
+        public void AddComment(Comment comment)
+        {
+            GuardExtensions.ThrowIfNull(comment, nameof(comment));
+            _comments.Add(comment);
+        }
+
+        public void AddComment(Comment comment, Guid parentCommentId)
+        {
+            GuardExtensions.ThrowIfNull(comment, nameof(comment));
+            GuardExtensions.ThrowIfNull(parentCommentId, nameof(parentCommentId));
+            var parentComment = _comments.First(x => x.ParentComment.Id.Equals(parentCommentId));
+            comment.SetParent(parentComment);
+            _comments.Add(comment);
+        }
+
+        public void UpdateComment(Guid id, string text)
+        {
+            var comment = _comments.First(x => x.Id.Equals(id));
+            GuardExtensions.ThrowIfNull(comment, nameof(comment));
+            comment.SetText(text);
+        }
     }
 }

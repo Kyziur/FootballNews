@@ -24,16 +24,86 @@
             @Html.Raw(Model.Content)
         </div><!-- /.blog-post -->
     </div>
-    @* <div class="col-md-4"></div> *@
-    @* <div class="card"> *@
-    @*     @if (Model.ImageAsBytes != null && Model.ImageAsBytes.Length > 0) *@
-    @*     { *@
-    @*         <img class="card-img-top" src="data:image/jpg;base64, @Convert.ToBase64String(Model.ImageAsBytes)" alt="@Model.ImageName"> *@
-    @*     } *@
-    @*     <div class="card-body"> *@
-    @*         <p class="card-text">@Html.Raw(Model.Content)</p> *@
-    @*     </div> *@
-    @* </div> *@
-    @*      *@
-    <div class="my-3"><a class="card-link" asp-action="Index" asp-controller="Home">Back to articles</a></div>
+    <div class="my-3">
+        <a class="card-link" asp-action="Index" asp-controller="Home">Back to articles</a>
+    </div>
 </div>
+<div class="col-md-7">
+    <div class="border-bottom d-flex justify-content-between align-items-center  pb-1">
+        <div>
+            <h5 class="my-auto">Comments</h5>
+        </div>
+        <a href="google.com" class="btn btn-sm btn-primary">Add reply</a>
+    </div>
+    <section class="small" role="comments">
+        <div class="position-relative m-2">
+            <div class="comment">
+                <div class="pb-1 d-flex justify-content-between">
+                    <span>
+                        <strong>Username of user</strong>
+                    </span>
+                    <span class="text-muted">Today at 5:42PM</span>
+                </div>
+                <div class="pb-1">
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+                <div class="pb-1">
+                    <a href="https://google.com">Reply</a>
+                </div>
+            </div>
+            @*Here should go child comment*@
+            <div class="position-relative m-2">
+                <div class="comment">
+                    <div class="pb-1 d-flex justify-content-between">
+                        <span>
+                            <strong>Username of user</strong>
+                        </span>
+                        <span class="text-muted">Today at 5:42PM</span>
+                    </div>
+                    <div class="pb-1">
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </div>
+                    <div class="pb-1">
+                        <a href="https://google.com">Reply</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Here goes same another comment without parent*@
+        <div class="position-relative m-2">
+            <div class="comment">
+                <div class="pb-1 d-flex justify-content-between">
+                    <span>
+                        <strong>Username of user</strong>
+                    </span>
+                    <span class="text-muted">Today at 5:42PM</span>
+                </div>
+                <div class="pb-1">
+                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                </div>
+                <div class="pb-1">
+                    <a href="https://google.com">Reply</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+@*TODO: DO PÓŹNIEJSZEGO UŻYCIA*@
+@* <section class="row" role="comments"> *@
+@*     <div class="col-md-7 small ml-1"> *@
+@*         <div class="d-flex justify-content-between"> *@
+@*             <span> *@
+@*                 <strong>Username of user</strong> *@
+@*             </span> *@
+@*             <span class="text-muted">Today at 5:42PM</span> *@
+@*         </div> *@
+@*         <div class=""> *@
+@*             Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. *@
+@*         </div> *@
+@*         <div> *@
+@*             <a href="https://google.com">Reply</a> *@
+@*         </div> *@
+@*     </div> *@
+@* </section> *@

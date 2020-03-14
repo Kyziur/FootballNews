@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
@@ -17,12 +18,20 @@ namespace FootballNews.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Article>> GetAll()
+        public async Task<IEnumerable<Article>> GetAllFiltered(string searchString)
         {
             return await _context.Articles
                 .Include(x => x.ArticlesTags)
-                .ThenInclude(x => x.Tag)
+                .ThenInclude(x => x.Tag).Where(x =>
+                    x.Title.Contains(searchString) || x.Content.Contains(searchString))
                 .ToListAsync();
+        }
+
+        public IQueryable<Article> GetAllAsQueryable()
+        {
+            return _context.Articles
+                .Include(x => x.ArticlesTags)
+                .ThenInclude(x => x.Tag);
         }
 
         public async Task<Article> GetById(Guid id)

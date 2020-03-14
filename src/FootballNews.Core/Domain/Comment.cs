@@ -11,22 +11,34 @@ namespace FootballNews.Core.Domain
         {
         }
 
-        public Comment(string author, string text)
+        public Comment(Guid commentId, User author, string text)
         {
-            GuardExtensions.ThrowIfEmpty(author, nameof(author));
-            GuardExtensions.ThrowIfEmpty(text, nameof(text));
-
+            GuardExtensions.ThrowIfNull(author, nameof(author));
+            GuardExtensions.ThrowIfNull(commentId, nameof(commentId));
+            Id = commentId;
             Author = author;
-            Text = text;
+            SetText(text);
             CreatedAt = DateTime.UtcNow;
         }
 
         public Guid Id { get; }
-        public string Author { get; }
-        public string Text { get; }
+        public User Author { get; }
+        public string Text { get; private set; }
         public DateTime CreatedAt { get; }
         public IEnumerable<string> LikedBy { get; private set; }
         
         public Comment ParentComment { get; private set; }
+
+        public void SetText(string text)
+        {
+            GuardExtensions.ThrowIfEmpty(text, nameof(text));
+            Text = text;
+        }
+
+        public void SetParent(Comment parentComment)
+        {
+            GuardExtensions.ThrowIfNull(parentComment, nameof(parentComment));
+            ParentComment = parentComment;
+        }
     }
 }

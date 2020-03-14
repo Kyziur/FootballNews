@@ -15,6 +15,12 @@
         </a>
     </div>
 </div>
+<div class="mb-3">
+    <form class="form-inline" method="get" asp-area="Admin" asp-controller="Articles" asp-action="Index" asp-route-page="@Model.PageNumber">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search by title and content" aria-label="Search" name="searchString">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead class="thead-dark">
@@ -60,12 +66,14 @@
     </table>
 </div>
 <div>
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), 
-    new PagedListRenderOptions {
-        LiElementClasses = new string[] { "page-item" },
-        PageClasses = new string[] { "page-link" }
-})
+    @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"}
+        })
 </div>
+
 @section Scripts
 {
     <script>

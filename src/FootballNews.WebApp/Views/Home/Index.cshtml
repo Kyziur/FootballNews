@@ -1,9 +1,10 @@
-﻿@model IEnumerable<Article>
+﻿
+@model IPagedList<Article>
 @{
     ViewData["Title"] = "Articles";
 }
 
-<div>
+<div class="container-fluid">
     <div class="d-flex">
         <section class="flex-column col-lg-9 justify-content-center">
             @foreach (var article in Model)
@@ -45,5 +46,21 @@
         <aside class="col-md-3">
             @await Component.InvokeAsync("Tags")
         </aside>
+    </div>
+    <div class="d-flex ml-3 mt-2">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+            new PagedListRenderOptions
+            {
+                
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"},
+                LinkToPreviousPageFormat = "Newer",
+                LinkToNextPageFormat = "Older",
+                DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                DisplayLinkToLastPage = PagedListDisplayMode.Never,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = false
+            })
     </div>
 </div>

@@ -26,9 +26,9 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string searchString = "")
         {
-            var articles = await _articleRepository.GetAll();
+            var articles = await _articleRepository.GetAllFiltered(searchString);
             var onePageArticles = await articles.ToPagedListAsync(page, 5);
             var model = onePageArticles.Select(x => new IndexArticleModel
             {

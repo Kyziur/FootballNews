@@ -2,11 +2,14 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.WebApp.ViewModels;
 using FootballNews.WebApp.ViewModels.Article;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using X.PagedList;
 
 namespace FootballNews.WebApp.Controllers
 {
@@ -14,25 +17,30 @@ namespace FootballNews.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IArticleRepository _articleRepository;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, IArticleRepository articleRepository)
+        public HomeController(ILogger<HomeController> logger, IArticleRepository articleRepository, UserManager<User> userManager)
         {
             _logger = logger;
             _articleRepository = articleRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string tag = "")
+        public async Task<IActionResult> Index(string tag = "", int page = 1)
         {
-            var articles = await _articleRepository.GetAll();
-            var articlesOrderedByCreatedDate = articles.OrderByDescending(x => x.CreatedAt).ToList();
-
+            var articles = _articleRepository.GetAllAsQueryable();
+            
             if (!string.IsNullOrWhiteSpace(tag))
             {
-                articlesOrderedByCreatedDate = articles.Where(x => x.Tags.Any(y => y.Name == tag)).ToList();
+                articles = articles.Where(x => x.ArticlesTags.Any(y => y.Tag.Name == tag));
             }
+            
+            var articlesOrderedByCreatedDate = articles.ToList().OrderByDescending(x => x.CreatedAt);
+            var onePageArticles = await articlesOrderedByCreatedDate.ToPagedListAsync(page, 5);
+        
 
-            return View(articlesOrderedByCreatedDate);
+            return View(onePageArticles);
         }
 
         [HttpGet]
@@ -73,6 +81,38 @@ namespace FootballNews.WebApp.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Comment(CommentViewModel model)
+        {
+            var article = await _articleRepository.GetByTitle(model.ArticleTitle);
+            if (article is null)
+            {
+                return NotFound("Article with this title has not been found.");
+            }
+            
+            if (model.Id.HasValue)
+            {
+                article.UpdateComment(model.Id.Value, model.Text);
+            }
+            else
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var comment = new Comment(Guid.NewGuid(), user, model.Text);
+
+                if (model.ParentId.HasValue)
+                {
+                    article.AddComment(comment, model.ParentId.Value);
+                }
+                else
+                {
+                    article.AddComment(comment);
+                }
+            }
+
+            await _articleRepository.Update(article);
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
