@@ -9,6 +9,7 @@ using FootballNews.WebApp.Areas.Admin.ViewModels.Article;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using X.PagedList;
 
 namespace FootballNews.WebApp.Areas.Admin.Controllers
 {
@@ -23,18 +24,13 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             _articleRepository = articleRepository;
             _tagRepository = tagRepository;
         }
-
-        private FormFile GetFormFileFromBytes(byte[] bytes, string imageName)
-        {
-            using var stream = new MemoryStream(bytes);
-            return new FormFile(stream, 0, bytes.Length, null ,imageName );
-        }
         
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var articles = await _articleRepository.GetAll();
-            var model = articles.Select(x => new IndexArticleModel
+            var onePageArticles = await articles.ToPagedListAsync(page, 5);
+            var model = onePageArticles.Select(x => new IndexArticleModel
             {
                 Id = x.Id,
                 Title = x.Title,

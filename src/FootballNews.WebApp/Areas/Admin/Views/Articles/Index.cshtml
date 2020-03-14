@@ -1,5 +1,4 @@
-﻿@using FootballNews.WebApp.Extensions
-@model IEnumerable<IndexArticleModel>
+﻿@model IPagedList<IndexArticleModel>
 @{
     ViewData["Title"] = "Articles";
 }
@@ -60,7 +59,13 @@
         </tbody>
     </table>
 </div>
-
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), 
+    new PagedListRenderOptions {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+})
+</div>
 @section Scripts
 {
     <script>
