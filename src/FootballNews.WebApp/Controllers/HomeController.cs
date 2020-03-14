@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Repositories;
@@ -24,13 +25,14 @@ namespace FootballNews.WebApp.Controllers
         public async Task<IActionResult> Index(string tag = "")
         {
             var articles = await _articleRepository.GetAll();
+            var articlesOrderedByCreatedDate = articles.OrderByDescending(x => x.CreatedAt).ToList();
 
             if (!string.IsNullOrWhiteSpace(tag))
             {
-                articles = articles.Where(x => x.Tags.Any(y => y.Name == tag));
+                articlesOrderedByCreatedDate = articles.Where(x => x.Tags.Any(y => y.Name == tag)).ToList();
             }
 
-            return View(articles);
+            return View(articlesOrderedByCreatedDate);
         }
 
         [HttpGet]
@@ -55,7 +57,17 @@ namespace FootballNews.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string title)
         {
-            return View();
+            var article = await _articleRepository.GetByTitle(title);
+            var model = new ArticleModel
+            {
+                Title = article.Title,
+                Content = article.Content,
+                ImageName = article.ImageName,
+                ImageAsBytes = article.Image,
+                CreatedDate = article.CreatedAt,
+                TagsIdsWithNames = article.Tags.Select(x => new Tuple<Guid, string>(x.Id, x.Name)).ToList()
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

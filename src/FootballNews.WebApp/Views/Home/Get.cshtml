@@ -1,0 +1,39 @@
+﻿@model FootballNews.WebApp.ViewModels.Article.ArticleModel
+
+@{
+    ViewBag.Title = Model.Title;
+}
+<div class="container d-flex justify-content-center flex-column">
+    <div class="mb-1">
+        @if (Model.ImageAsBytes != null && Model.ImageAsBytes.Length > 0)
+        {
+            <img class="img-max-size" src="data:image/jpg;base64, @Convert.ToBase64String(Model.ImageAsBytes)" alt="@Model.ImageName">
+        }
+    </div>
+    <div class="blog-main">
+        <div class="pb-4 mb-4 border-bottom ">
+            <h2 class="font-italic blog-post-title">
+                @Model.Title
+            </h2>
+            <span class="blog-post-meta">
+                @Model.CreatedDate.ToShortDateString()
+                by <a href="#">Mark</a>
+            </span>
+        </div>
+        <div class="blog-post text-break">
+            @Html.Raw(Model.Content)
+        </div><!-- /.blog-post -->
+    </div>
+    @* <div class="col-md-4"></div> *@
+    @* <div class="card"> *@
+    @*     @if (Model.ImageAsBytes != null && Model.ImageAsBytes.Length > 0) *@
+    @*     { *@
+    @*         <img class="card-img-top" src="data:image/jpg;base64, @Convert.ToBase64String(Model.ImageAsBytes)" alt="@Model.ImageName"> *@
+    @*     } *@
+    @*     <div class="card-body"> *@
+    @*         <p class="card-text">@Html.Raw(Model.Content)</p> *@
+    @*     </div> *@
+    @* </div> *@
+    @*      *@
+    <div class="my-3"><a class="card-link" asp-action="Index" asp-controller="Home">Back to articles</a></div>
+</div>
