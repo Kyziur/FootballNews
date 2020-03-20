@@ -21,10 +21,10 @@ namespace FootballNews.Core.Domain
             CreatedAt = DateTime.UtcNow;
         }
 
-        public Guid Id { get; }
-        public User Author { get; }
+        public Guid Id { get; private set; }
+        public User Author { get; private set; }
         public string Text { get; private set; }
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; private set; }
         public IEnumerable<string> LikedBy { get; private set; }
         
         public Comment ParentComment { get; private set; }

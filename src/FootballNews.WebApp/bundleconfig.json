@@ -2,7 +2,8 @@
   {
     "outputFileName": "wwwroot/css/dist/index.min.css",
     "inputFiles": [
-      "wwwroot/css/src/site.css"
+      "wwwroot/css/src/site.css",
+      "wwwroot/css/src/jquery-comments.css"
     ]
   },
   {

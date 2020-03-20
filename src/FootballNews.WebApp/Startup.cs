@@ -1,3 +1,4 @@
+using System;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.Infrastructure.Data;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace FootballNews.WebApp
 {
@@ -27,11 +29,14 @@ namespace FootballNews.WebApp
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<DatabaseContext>().AddDefaultUI().AddDefaultTokenProviders();
-            
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddRazorPages();
+            services.AddRazorPages().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
             
             //Registering repositories in dependency injection container (Read about: DI (dependency injection) and IoC (Inversion of Control)
             services.AddScoped<IArticleRepository, ArticleRepository>();

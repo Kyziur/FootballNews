@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Article;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
@@ -29,7 +28,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int page = 1, string searchString = "")
         {
             var articles = await _articleRepository.GetAllFiltered(searchString);
-            var onePageArticles = await articles.ToPagedListAsync(page, 5);
+            var onePageArticles = await articles.ToPagedListAsync(page, 10);
             var model = onePageArticles.Select(x => new IndexArticleModel
             {
                 Id = x.Id,

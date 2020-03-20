@@ -37,7 +37,7 @@ namespace FootballNews.WebApp.Controllers
             }
             
             var articlesOrderedByCreatedDate = articles.ToList().OrderByDescending(x => x.CreatedAt);
-            var onePageArticles = await articlesOrderedByCreatedDate.ToPagedListAsync(page, 5);
+            var onePageArticles = await articlesOrderedByCreatedDate.ToPagedListAsync(page, 10);
         
 
             return View(onePageArticles);
@@ -81,38 +81,6 @@ namespace FootballNews.WebApp.Controllers
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Comment(CommentViewModel model)
-        {
-            var article = await _articleRepository.GetByTitle(model.ArticleTitle);
-            if (article is null)
-            {
-                return NotFound("Article with this title has not been found.");
-            }
-            
-            if (model.Id.HasValue)
-            {
-                article.UpdateComment(model.Id.Value, model.Text);
-            }
-            else
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var comment = new Comment(Guid.NewGuid(), user, model.Text);
-
-                if (model.ParentId.HasValue)
-                {
-                    article.AddComment(comment, model.ParentId.Value);
-                }
-                else
-                {
-                    article.AddComment(comment);
-                }
-            }
-
-            await _articleRepository.Update(article);
-            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -29,6 +29,7 @@ namespace FootballNews.Core.Domain
         public string ImageName { get; private set; }
         public DateTime CreatedAt { get; }
         public DateTime UpdatedAt { get; private set; }
+        public User Author { get; private set; }
         public IEnumerable<ArticleTag> ArticlesTags => _articleTags;
         public IEnumerable<Comment> Comments => _comments;
         public IEnumerable<string> LikedBy => _likedBy;
@@ -77,7 +78,7 @@ namespace FootballNews.Core.Domain
         {
             GuardExtensions.ThrowIfNull(comment, nameof(comment));
             GuardExtensions.ThrowIfNull(parentCommentId, nameof(parentCommentId));
-            var parentComment = _comments.First(x => x.ParentComment.Id.Equals(parentCommentId));
+            var parentComment = _comments.First(x => x.Id.Equals(parentCommentId));
             comment.SetParent(parentComment);
             _comments.Add(comment);
         }
@@ -87,6 +88,12 @@ namespace FootballNews.Core.Domain
             var comment = _comments.First(x => x.Id.Equals(id));
             GuardExtensions.ThrowIfNull(comment, nameof(comment));
             comment.SetText(text);
+        }
+
+        public void SetAuthor(User author)
+        {
+            GuardExtensions.ThrowIfNull(author, nameof(author));
+            Author = author;
         }
     }
 }

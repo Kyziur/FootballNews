@@ -1,0 +1,35 @@
+﻿@page
+@model FootballNews.WebApp.Areas.Identity.Pages.Account.Manage.ManageRoles
+@{
+    ViewData["Title"] = "Roles";
+    ViewData["ActivePage"] = ManageNavPages.ManageRoles;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Roles</th>
+            </tr>
+          </thead>
+          <tbody>
+          @foreach (var userRole in Model.UserRoleModels)
+          {
+              <tr>
+                  <th scope="row">@userRole.Username</th>
+                  <td>@userRole.Email</td>
+                  <td>@string.Join(",",userRole.Roles)</td>
+              </tr>
+          }
+
+          </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

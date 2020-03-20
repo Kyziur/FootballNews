@@ -17,6 +17,7 @@ namespace FootballNews.Infrastructure.Data.Configuration
                 v => JsonConvert.DeserializeObject<IEnumerable<string>>(v,
                     new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
             builder.Ignore(x => x.Tags);
+            builder.HasOne(x => x.Author).WithMany(x => x.CreatedArticles);
         }
     }
 }

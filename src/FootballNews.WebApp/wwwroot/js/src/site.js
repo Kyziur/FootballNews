@@ -1,9 +1,9 @@
-﻿function launchNavbar(){
-    let barContainer = document.getElementById('bar-containerJs');
-    barContainer.addEventListener('click', function(){
-        this.classList.toggle('change');
-    });
-}
+﻿// function launchNavbar(){
+//     let barContainer = document.getElementById('bar-containerJs');
+//     barContainer.addEventListener('click', function(){
+//         this.classList.toggle('change');
+//     });
+// }
 
 function areYouSure(){
     const deleteLinks = document.querySelectorAll('.delete');
