@@ -8,18 +8,17 @@
         <h2>Users</h2>
     </header>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Roles</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+<div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
             @foreach (var user in Model)
             {
                 <tr>
@@ -38,7 +37,6 @@
             </tbody>
         </table>
     </div>
-</div>
 <div>
     @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
         new PagedListRenderOptions
