@@ -64,16 +64,21 @@
         }
         </tbody>
     </table>
-</div>
+
 <div>
     @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
         new PagedListRenderOptions
         {
             LiElementClasses = new string[] {"page-item"},
-            PageClasses = new string[] {"page-link"}
+            PageClasses = new string[] {"page-link"},
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            MaximumPageNumbersToDisplay = new int?(5)
         })
 </div>
-
+</div>
 @section Scripts
 {
     <script>

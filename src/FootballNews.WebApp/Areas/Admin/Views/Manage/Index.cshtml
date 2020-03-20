@@ -1,0 +1,54 @@
+﻿@model IPagedList<IndexViewModel>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
+    <header class="">
+        <h2>Users</h2>
+    </header>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <th scope="row">@user.Username</th>
+                    <td>@user.Email</td>
+                    <td>@string.Join(",", user.Roles)</td>
+                    <td>
+                        <div class="btn-group text-white" role="group" aria-label="Actions">
+                            <a class="btn btn-primary" asp-area="Admin" asp-controller="Manage" asp-action="Update" asp-route-id="@user.Id"><i class="fas fa-edit"></i>Edit</a>
+                            <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Manage" asp-action="Delete" asp-route-id="@user.Id" data-confirm="Are you sure you want to delete this item?"><i class="far fa-trash-alt"></i>Delete</a>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"},
+            DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+            DisplayLinkToLastPage = PagedListDisplayMode.Never,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            MaximumPageNumbersToDisplay = new int?(5)
+        })
+</div>

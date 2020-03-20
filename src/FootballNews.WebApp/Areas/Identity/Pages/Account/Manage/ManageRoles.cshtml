@@ -8,28 +8,36 @@
 <div class="row">
     <div class="col-md-6">
         <table class="table">
-          <thead>
+            <thead>
             <tr>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
-              <th scope="col">Roles</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Actions</th>
             </tr>
-          </thead>
-          <tbody>
-          @foreach (var userRole in Model.UserRoleModels)
-          {
-              <tr>
-                  <th scope="row">@userRole.Username</th>
-                  <td>@userRole.Email</td>
-                  <td>@string.Join(",",userRole.Roles)</td>
-              </tr>
-          }
+            </thead>
+            <tbody>
+            @foreach (var userRole in Model.UserRoleModels)
+            {
+                <tr>
+                    <th scope="row">@userRole.Username</th>
+                    <td>@userRole.Email</td>
+                    <td>@string.Join(",", userRole.Roles)</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Actions">
+                            <button type="button" class="btn btn-secondary">Edit</button>
+                            <button type="button" class="btn btn-secondary">Delete</button>
+                        </div>
+                    </td>
 
-          </tbody>
+                </tr>
+            }
+
+            </tbody>
         </table>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

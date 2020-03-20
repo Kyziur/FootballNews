@@ -26,10 +26,7 @@ namespace FootballNews.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new TagConfiguration());
             modelBuilder.ApplyConfiguration(new ArticleTagConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole(Role.Admin),
-                new IdentityRole(Role.Editor),
-                new IdentityRole(Role.User));
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
