@@ -16,6 +16,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             _leagueRepository = leagueRepository;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -25,27 +26,14 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 Id = x.Id,
                 Name = x.Name
             });
-            
+
             return View(model);
         }
 
-        // [HttpGet]
-        // public async Task<IActionResult> Get(Guid id)
-        // {
-        //     var league = await _leagueRepository.GetById(id);
-        //     if (league is null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     var model = new LeagueModel {Id = league.Id, Name = league.Name};
-        //     return View(model);
-        // }
-
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            return View();
+            return View(new LeagueModel());
         }
 
         [HttpPost]
@@ -55,12 +43,11 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             {
                 return View(model);
             }
-            
-            var league = new League(model.Name);
+
+            var league = new League(Guid.NewGuid(), model.Name);
             await _leagueRepository.Create(league);
-            
-            //redirect to created league or to index action
-            return RedirectToAction(nameof(Index), new {id = league.Id});
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -69,19 +56,29 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var league = await _leagueRepository.GetById(id);
             var model = new LeagueModel {Id = league.Id, Name = league.Name};
 
-            return View();
+            return View(model);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update()
+        [HttpPost]
+        public async Task<IActionResult> Update(LeagueModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var league = await _leagueRepository.GetById(model.Id);
+            league.SetName(model.Name);
+            await _leagueRepository.Update(league);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var league = await _leagueRepository.GetById(id);
+            await _leagueRepository.Delete(league);
             return Ok();
-        } 
+        }
     }
 }

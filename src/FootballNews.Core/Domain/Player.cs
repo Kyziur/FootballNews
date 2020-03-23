@@ -11,10 +11,14 @@ namespace FootballNews.Core.Domain
         {
         }
 
-        public Player(string firstName, string lastName, DateTime birthdate)
+        public Player(Guid id, string firstName, string lastName, DateTime birthdate)
         {
             GuardExtensions.ThrowIfEmpty(firstName, nameof(firstName));
             GuardExtensions.ThrowIfEmpty(lastName, nameof(lastName));
+            GuardExtensions.ThrowIfNull(id, nameof(id));
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
             Birthdate = birthdate;
         }
 
@@ -26,6 +30,7 @@ namespace FootballNews.Core.Domain
         public string Position { get; private set; }
         public int NumberOnTShirt { get; private set; }
         public byte[] Photo { get; private set; }
+        public Team Team { get; set; }
         public IEnumerable<string> LikedBy => _likedBy;
     }
 }

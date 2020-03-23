@@ -30,6 +30,7 @@ namespace FootballNews.Core.Domain
         public DateTime CreatedAt { get; }
         public DateTime UpdatedAt { get; private set; }
         public User Author { get; private set; }
+        public League League { get; private set; }
         public IEnumerable<ArticleTag> ArticlesTags => _articleTags;
         public IEnumerable<Comment> Comments => _comments;
         public IEnumerable<string> LikedBy => _likedBy;

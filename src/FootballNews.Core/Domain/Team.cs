@@ -23,6 +23,7 @@ namespace FootballNews.Core.Domain
         public Guid Id { get; }
         public string Name { get; }
         public int Points { get; private set; }
+        public League League { get; private set; }
         public IEnumerable<Player> Players => _players;
         public IEnumerable<string> Trophies => _thropies;
         public IEnumerable<Goal> ScoredGoals => _scoredGoals;

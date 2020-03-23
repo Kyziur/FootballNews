@@ -41,6 +41,7 @@ namespace FootballNews.WebApp
             //Registering repositories in dependency injection container (Read about: DI (dependency injection) and IoC (Inversion of Control)
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ILeagueRepository, LeagueRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
