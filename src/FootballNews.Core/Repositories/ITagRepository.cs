@@ -8,6 +8,7 @@ namespace FootballNews.Core.Repositories
     public interface ITagRepository
     {
         Task<IEnumerable<Tag>> GetAll();
+        Task<IEnumerable<Tag>> GetAllFiltered(string filter);
         Task Create(Tag tag);
         Task Update(Tag tag);
         Task Delete(Guid id);

@@ -14,14 +14,21 @@ namespace FootballNews.Core.Domain
         {
         }
 
-        public Team(string name)
+        public Team(Guid id, string name)
+        {
+            GuardExtensions.ThrowIfNull(id, nameof(id));
+            Id = id;
+            SetName(name);
+        }
+
+        public void SetName(string name)
         {
             GuardExtensions.ThrowIfEmpty(name, nameof(name));
             Name = name;
         }
 
         public Guid Id { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
         public int Points { get; private set; }
         public League League { get; private set; }
         public IEnumerable<Player> Players => _players;

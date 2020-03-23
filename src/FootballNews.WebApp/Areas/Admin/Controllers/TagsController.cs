@@ -5,6 +5,7 @@ using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Tag;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace FootballNews.WebApp.Areas.Admin.Controllers
 {
@@ -16,15 +17,17 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             _tagRepository = tagRepository;
         }
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(int page = 1, string search = "")
         {
-            var tags = await _tagRepository.GetAll();
-            var model = tags.Select(x => new TagModel
+            var tags = await _tagRepository.GetAllFiltered(search);
+            var onePageTags = await tags.ToPagedListAsync(page, 10);
+            var model = onePageTags.Select(x => new TagModel
             {
                 Id = x.Id.ToString(),
                 Name = x.Name
-            }).ToList();
-            
+            });
+
             return View(model);
         }
 
@@ -44,7 +47,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
 
             var tag = new Tag(Guid.NewGuid(), model.Name);
             await _tagRepository.Create(tag);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -52,13 +55,13 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Update(string id)
         {
             var tag = await _tagRepository.GetById(Guid.Parse(id));
-            
+
             var model = new TagModel
             {
                 Id = tag.Id.ToString(),
                 Name = tag.Name
             };
-            
+
             return View(model);
         }
 
@@ -72,7 +75,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
 
             var tag = await _tagRepository.GetById(Guid.Parse(model.Id));
             tag.SetName(model.Name);
-            
+
             await _tagRepository.Update(tag);
             return RedirectToAction(nameof(Index));
         }
@@ -89,7 +92,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 Console.WriteLine($"Could not delete the tag with id: {id}");
                 return BadRequest();
             }
-            
+
             return Ok();
         }
     }

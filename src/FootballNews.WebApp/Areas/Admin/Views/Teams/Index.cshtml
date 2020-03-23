@@ -1,14 +1,14 @@
-﻿@model IPagedList<TagModel>
+﻿@model IPagedList<FootballNews.WebApp.Areas.Admin.ViewModels.Team.TeamModel>
 @{
-    ViewData["Title"] = "Tags";
+    ViewData["Title"] = "Teams";
 }
 
 <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
     <header class="">
-        <h2>Tags</h2>
+        <h2>Teams</h2>
     </header>
     <div>
-        <a class="btn btn-md btn-outline-light" asp-area="Admin" asp-controller="Tags" asp-action="Create">
+        <a class="btn btn-md btn-outline-light" asp-area="Admin" asp-controller="Teams" asp-action="Create">
             <div class="d-inline-block mr-1">
                 <i class="fas fa-plus"></i>
             </div>Create
@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="mb-3">
-    <form class="form-inline" method="get" asp-area="Admin" asp-controller="Tags" asp-action="Index" asp-route-page="@Model.PageNumber">
+    <form class="form-inline" method="get" asp-area="Admin" asp-controller="Teams" asp-action="Index" asp-route-page="@Model.PageNumber">
         <input class="form-control mr-sm-2" type="search" placeholder="Search by title and content" aria-label="Search" name="search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
@@ -30,14 +30,14 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var tag in Model)
+        @foreach (var team in Model)
         {
             <tr>
-                <th scope="row">@tag.Name</th>
+                <th scope="row">@team.Name</th>
                 <td>
                     <div class="btn-group text-white" role="group" aria-label="Actions">
-                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Tags" asp-action="Update" asp-route-id="@tag.Id"><i class="fas fa-edit"></i>Edit</a>
-                        <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Tags" asp-action="Delete" asp-route-id="@tag.Id" data-confirm="Are you sure you want to delete this item?"><i class="far fa-trash-alt"></i>Delete</a>
+                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Teams" asp-action="Update" asp-route-id="@team.Id"><i class="fas fa-edit"></i>Edit</a>
+                        <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Teams" asp-action="Delete" asp-route-id="@team.Id" data-confirm="Are you sure you want to delete this item?"><i class="far fa-trash-alt"></i>Delete</a>
                     </div>
                 </td>
             </tr>

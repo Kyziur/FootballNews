@@ -23,6 +23,11 @@ namespace FootballNews.Infrastructure.Repositories
             return await _context.Tags.Include(x => x.TagArticles).ThenInclude(x => x.Article).ToListAsync();
         }
 
+        public async Task<IEnumerable<Tag>> GetAllFiltered(string filter)
+        {
+            return await _context.Tags.Include(x => x.TagArticles).ThenInclude(x => x.Article).Where(x => x.Name.Contains(filter)).ToListAsync();
+        }
+
         public async Task Create(Tag tag)
         {
             await _context.Tags.AddAsync(tag);

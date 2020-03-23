@@ -5,6 +5,7 @@ using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.League;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace FootballNews.WebApp.Areas.Admin.Controllers
 {
@@ -18,10 +19,11 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, string search = "")
         {
-            var leagues = await _leagueRepository.GetAll();
-            var model = leagues.Select(x => new LeagueModel
+            var leagues = await _leagueRepository.GetAllFiltered(search);
+            var onePageLeagues = await leagues.ToPagedListAsync(page, 10);
+            var model = onePageLeagues.Select(x => new LeagueModel
             {
                 Id = x.Id,
                 Name = x.Name
