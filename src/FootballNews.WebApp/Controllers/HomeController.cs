@@ -69,6 +69,8 @@ namespace FootballNews.WebApp.Controllers
             var model = new ArticleModel
             {
                 Title = article.Title,
+                Author = article.Author.UserName,
+                League = article.League.Name,
                 Content = article.Content,
                 ImageName = article.ImageName,
                 ImageAsBytes = article.Image,

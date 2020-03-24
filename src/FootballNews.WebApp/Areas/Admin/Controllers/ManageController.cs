@@ -69,7 +69,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(model.Id.ToString());
             user.Email = model.Email;
             user.UserName = model.Username;
-            
+            await _userManager.UpdateAsync(user);
+
             var userRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, userRoles);
             await _userManager.AddToRolesAsync(user, model.SelectedRoles);

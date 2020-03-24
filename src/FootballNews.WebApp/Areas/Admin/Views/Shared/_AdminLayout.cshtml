@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Piłkarska Zajawka</title>
+    <link rel="stylesheet" href="~/css/dist/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/dist/index.min.css" asp-append-version="true"/>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+    <script src="https://kit.fontawesome.com/4bb9ef817d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="header-image">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-5 px-md-4 mb-3 border-bottom shadow-none">
+        <div class="my-0">
+            <h5 class=" font-weight-normal">
+                <a href="~/" class="text-light">Company logo</a>
+            </h5>
+        </div>
+        <div class="company-name-wrapper">
+            <div class="company-name">
+                <h2 class="font-weight-bold">Piłkarska Zajawka</h2>
+            </div>
+        </div>
+        <partial name="_LoginPartial"/>
+    </div>
+</header>
+<section role="navigation" class="mb-2">
+    <partial name="_MenuPartial"/>
+</section>
+<div class="container-fluid">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        <a asp-controller="Home" asp-action="Privacy"> &copy; 2020 - FootballNews.WebApp - >Privacy</a>
+    </div>
+</footer>
+
+
+<script src="~/js/dist/jquery/jquery.min.js"></script>
+<script src="~/js/dist/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="~/js/index.min.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
+@RenderSection("Scripts", false)
+
+</body>
+</html>

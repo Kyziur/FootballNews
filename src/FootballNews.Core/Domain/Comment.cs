@@ -25,6 +25,7 @@ namespace FootballNews.Core.Domain
         public User Author { get; private set; }
         public string Text { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; }
         public IEnumerable<string> LikedBy { get; private set; }
         
         public Comment ParentComment { get; private set; }
@@ -33,6 +34,7 @@ namespace FootballNews.Core.Domain
         {
             GuardExtensions.ThrowIfEmpty(text, nameof(text));
             Text = text;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SetParent(Comment parentComment)

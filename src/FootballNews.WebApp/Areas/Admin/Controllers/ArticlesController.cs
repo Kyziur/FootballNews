@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Article;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
@@ -17,11 +18,15 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
     {
         private readonly IArticleRepository _articleRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly ILeagueRepository _leagueRepository;
+        private readonly UserManager<User> _userManager;
 
-        public ArticlesController(IArticleRepository articleRepository, ITagRepository tagRepository)
+        public ArticlesController(IArticleRepository articleRepository, ITagRepository tagRepository, ILeagueRepository leagueRepository, UserManager<User> userManager)
         {
             _articleRepository = articleRepository;
             _tagRepository = tagRepository;
+            _leagueRepository = leagueRepository;
+            _userManager = userManager;
         }
         
         [HttpGet]
@@ -34,7 +39,10 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 Id = x.Id,
                 Title = x.Title,
                 Content = x.Content,
+                League = x.League?.Name ?? "",
+                Author = x.Author?.UserName ?? "",
                 ImageAsBytes = x.Image,
+                Created = x.CreatedAt.ToShortDateString(),
                 Tags = x.ArticlesTags.Select(t => t.Tag.Name).ToList()
             });
             
@@ -45,9 +53,11 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Create()
         {
             var tags = await _tagRepository.GetAll();
+            var leagues = await _leagueRepository.GetAll();
             var model = new ArticleModel
             {
-                Tags = tags.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
+                Tags = tags.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
+                Leagues = leagues.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
             };
             
             return View(model);
@@ -58,6 +68,10 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var allTags = await _tagRepository.GetAll();
+                var allLeagues = await _leagueRepository.GetAll();
+                model.Tags = allTags.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+                model.Leagues = allLeagues.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
                 return View(model);
             }
             
@@ -73,6 +87,12 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var tags = await GetTagsFromModel(model);
             article.SetTags(tags);
             
+            var league = await _leagueRepository.GetById(Guid.Parse(model.SelectedLeagueId));
+            article.AssignToLeague(league);
+            
+            var user = await _userManager.GetUserAsync(User);
+            article.SetAuthor(user);
+            
             await _articleRepository.Create(article);
             return RedirectToAction(nameof(Index));
         }
@@ -81,7 +101,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             if (model.SelectedTagsIds is null)
                 return null;
-
+            
             var selectedTagsIds = model.SelectedTagsIds.Select(Guid.Parse);
             var tags = await _tagRepository.GetByIds(selectedTagsIds);
             return tags;
@@ -91,6 +111,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Update(Guid id)
         {
             var tags = await _tagRepository.GetAll();
+            var leagues = await _leagueRepository.GetAll();
             var article = await _articleRepository.GetById(id);
             var model = new ArticleModel
             {
@@ -102,8 +123,10 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 {
                     Text = t.Name,
                     Value = t.Id.ToString(),
-                    Selected = article.ArticlesTags.Any(x => x.TagId == t.Id)
-                }).ToList()
+                }).ToList(),
+                SelectedTagsIds = article.Tags.Select(x => x.Id.ToString()).ToList(),
+                SelectedLeagueId = article.League.Id.ToString(),
+                Leagues = leagues.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
             };
 
             return View(model);
@@ -114,6 +137,10 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var allTags = await _tagRepository.GetAll();
+                var allLeagues = await _leagueRepository.GetAll();
+                model.Tags = allTags.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+                model.Leagues = allLeagues.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
                 return View(model);
             }
 
@@ -131,6 +158,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             
             var tags = await GetTagsFromModel(model);
             article.SetTags(tags);
+            var league = await _leagueRepository.GetById(Guid.Parse(model.SelectedLeagueId));
+            article.AssignToLeague(league);
             
             await _articleRepository.Update(article);
             

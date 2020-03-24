@@ -18,6 +18,7 @@ namespace FootballNews.Infrastructure.Data.Configuration
                     new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
             builder.HasOne(x => x.ParentComment);
             builder.HasOne(x => x.Author).WithMany();
+            builder.Property(x => x.CreatedAt);
         }
     }
 }

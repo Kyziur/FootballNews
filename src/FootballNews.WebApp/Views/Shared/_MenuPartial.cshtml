@@ -3,10 +3,6 @@
 @inject UserManager<User> UserManager
 
 <div class="d-flex align-items-center border-top border-bottom p-2 shadow">
-@*     @if (SignInManager.IsSignedIn(User)) *@
-@*     { *@
-@*         <partial name="_SideMenuPartial"/> *@
-@*     } *@
     <div class="justify-content-center d-flex w-100 navigation-bar">
         <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Main page</a>
         @if (SignInManager.IsSignedIn(User))

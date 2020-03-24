@@ -15,6 +15,7 @@ namespace FootballNews.Core.Domain
         {
             
         }
+        
         public IEnumerable<Article> CreatedArticles { get; private set; }
     }
 }

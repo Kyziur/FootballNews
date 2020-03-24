@@ -27,7 +27,7 @@ namespace FootballNews.Core.Domain
         public string Content { get; private set; }
         public byte[] Image { get; private set; }
         public string ImageName { get; private set; }
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         public User Author { get; private set; }
         public League League { get; private set; }
@@ -95,6 +95,12 @@ namespace FootballNews.Core.Domain
         {
             GuardExtensions.ThrowIfNull(author, nameof(author));
             Author = author;
+        }
+
+        public void AssignToLeague(League league)
+        {
+            GuardExtensions.ThrowIfNull(league, nameof(league));
+            League = league;
         }
     }
 }

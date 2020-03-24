@@ -24,7 +24,9 @@
                                         <h5>@article.Title</h5>
                                     </span>
                                     <span class="card-text ml-2">
-                                        <small class="text-muted">here will be some info</small>
+                                        <small class="text-muted">@article.CreatedAt.ToString("dd'/'MM'/'yyyy HH:mm") by <span class="font-weight-bold">
+                                            @article.Author
+                                        </span></small>
                                     </span>
                                 </div>
                                 <p class="card-text">@Html.Raw(article.Content)</p>

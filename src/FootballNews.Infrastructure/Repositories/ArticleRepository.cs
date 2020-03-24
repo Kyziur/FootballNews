@@ -20,7 +20,7 @@ namespace FootballNews.Infrastructure.Repositories
 
         public async Task<IEnumerable<Article>> GetAllFiltered(string searchString)
         {
-            return await _context.Articles
+            return await _context.Articles.Include(x => x.League).Include(x => x.Author)
                 .Include(x => x.ArticlesTags)
                 .ThenInclude(x => x.Tag).Where(x =>
                     x.Title.Contains(searchString) || x.Content.Contains(searchString))
@@ -29,19 +29,28 @@ namespace FootballNews.Infrastructure.Repositories
 
         public IQueryable<Article> GetAllAsQueryable()
         {
-            return _context.Articles
+            return _context.Articles.Include(x => x.Author).Include(x => x.League)
                 .Include(x => x.ArticlesTags)
                 .ThenInclude(x => x.Tag);
         }
 
         public async Task<Article> GetById(Guid id)
         {
-            return await _context.Articles.Include(x => x.ArticlesTags).FirstAsync(x => x.Id == id);
+            return await _context.Articles
+                .Include(x => x.ArticlesTags)
+                .ThenInclude(x => x.Tag)
+                .Include(x => x.League)
+                .Include(x => x.Author)
+                .FirstAsync(x => x.Id == id);
         }
 
         public Task<Article> GetByTitle(string title)
         {
-            return _context.Articles.Include(x => x.ArticlesTags).ThenInclude(x => x.Tag)
+            return _context.Articles
+                .Include(x => x.League)
+                .Include(x => x.Author)
+                .Include(x => x.ArticlesTags)
+                .ThenInclude(x => x.Tag)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.Author)
                 .Include(x => x.Comments)
