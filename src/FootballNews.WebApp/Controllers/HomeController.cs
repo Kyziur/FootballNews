@@ -27,13 +27,18 @@ namespace FootballNews.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string tag = "", int page = 1)
+        public async Task<IActionResult> Index(string tag = "",string league = "", int page = 1)
         {
             var articles = _articleRepository.GetAllAsQueryable();
             
             if (!string.IsNullOrWhiteSpace(tag))
             {
                 articles = articles.Where(x => x.ArticlesTags.Any(y => y.Tag.Name == tag));
+            }
+
+            if (!string.IsNullOrWhiteSpace(league))
+            {
+                articles = articles.Where(x => x.League.Name == league);
             }
             
             var articlesOrderedByCreatedDate = articles.ToList().OrderByDescending(x => x.CreatedAt);

@@ -43,6 +43,7 @@ namespace FootballNews.WebApp
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ILeagueRepository, LeagueRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

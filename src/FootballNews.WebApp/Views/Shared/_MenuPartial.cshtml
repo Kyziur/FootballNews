@@ -1,7 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using FootballNews.Core.Repositories
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
+@inject ILeagueRepository LeagueRepository
 <div class="d-flex align-items-center border-top border-bottom p-2 shadow">
     <div class="justify-content-center d-flex w-100 navigation-bar">
         <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Main page</a>
@@ -11,16 +12,17 @@
             <a class="menu-item" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tags</a>
             <a class="menu-item" asp-area="Admin" asp-controller="Leagues" asp-action="Index">Leagues</a>
             <a class="menu-item" asp-area="Admin" asp-controller="Teams" asp-action="Index">Teams</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Players" asp-action="Index">Players</a>
             <a class="menu-item" asp-area="Admin" asp-controller="" asp-action="Index">Games</a>
             <a class="menu-item" asp-area="Admin" asp-controller="Manage" asp-action="Index">Administration</a>
         }
         else
         {
-            <a class="menu-item" href="#">MenuItem1</a>
-            <a class="menu-item" href="#">MenuItem2</a>
-            <a class="menu-item" href="#">MenuItem3</a>
-            <a class="menu-item" href="#">MenuItem4</a>
-            <a class="menu-item" href="#">MenuItem5</a>
+            
+            @foreach (var league in await LeagueRepository.GetAll())
+            {
+                <a class="menu-item" asp-controller="Home" asp-action="Index" asp-route-league="@league.Name">@league.Name</a>
+            }
         }
     </div>
 </div>

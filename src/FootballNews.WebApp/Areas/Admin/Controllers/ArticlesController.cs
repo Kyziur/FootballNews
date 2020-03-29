@@ -169,13 +169,17 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var article = await _articleRepository.GetById(id);
-            if (article is null)
+            try
             {
+                var article = await _articleRepository.GetById(id);
+                await _articleRepository.Delete(article);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not delete article with id: {id}");
                 return BadRequest();
             }
 
-            await _articleRepository.Delete(article);
             return Ok();
         }
         

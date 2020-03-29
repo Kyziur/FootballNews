@@ -7,6 +7,10 @@
 <div class="container-fluid">
     <div class="d-flex">
         <section class="flex-column col-lg-9 justify-content-center">
+            @if (Model.Count == 0)
+            {
+                <div>There is no articles on this topic</div>
+            }
             @foreach (var article in Model)
             {
                 <article class="news-list__item mt-4 p-1 card">
@@ -24,9 +28,10 @@
                                         <h5>@article.Title</h5>
                                     </span>
                                     <span class="card-text ml-2">
-                                        <small class="text-muted">@article.CreatedAt.ToString("dd'/'MM'/'yyyy HH:mm") by <span class="font-weight-bold">
-                                            @article.Author
-                                        </span></small>
+                                        <small class="text-muted">@article.CreatedAt.ToString("dd'/'MM'/'yyyy HH:mm") by
+                                            <span class="font-weight-bold">
+                                                @article.Author
+                                            </span></small>
                                     </span>
                                 </div>
                                 <p class="card-text">@Html.Raw(article.Content)</p>
@@ -37,7 +42,7 @@
                             <div class="d-flex flex-row my-3 tag-list">
                                 @foreach (var tag in article.Tags)
                                 {
-                                    <a asp-controller="Home" asp-action="Index" asp-route-tag="@tag.Name" class="tag-list__item">@tag.Name</a>
+                                    <a asp-controller="Home" asp-action="Index" asp-all-route-data="@Context.GetQueryParameters()" asp-route-tag="@tag.Name" class="tag-list__item">@tag.Name</a>
                                 }
                             </div>
                         </div>

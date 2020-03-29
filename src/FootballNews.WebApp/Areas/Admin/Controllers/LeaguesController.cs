@@ -78,8 +78,17 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var league = await _leagueRepository.GetById(id);
-            await _leagueRepository.Delete(league);
+            try
+            {
+                var league = await _leagueRepository.GetById(id);
+                await _leagueRepository.Delete(league);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not delete league with id: {id}");
+                return BadRequest();
+            }
+
             return Ok();
         }
     }

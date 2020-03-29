@@ -15,13 +15,21 @@
             <input asp-for="Name" class="form-control" placeholder="Input name of team"/>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="SelectedLeagueId"></label>
+            <select asp-for="SelectedLeagueId" asp-items="@Model.Leagues" class="selectpicker" data-live-search="true">
+            </select>
+            <span asp-validation-for="SelectedLeagueId" class="text-danger"></span>
+        </div>
         <div class="form-group d-flex justify-content-end p-2">
             <button type="submit" class="btn btn-outline-success">Submit</button>
         </div>
     </form>
+    
 </div>
 
 @section Scripts
 {
+    <partial name="_SelectPickerScriptPartial"/>
     <partial name="_ValidationScriptsPartial"/>
 }
