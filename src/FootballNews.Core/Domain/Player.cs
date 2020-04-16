@@ -62,6 +62,7 @@ namespace FootballNews.Core.Domain
         public int NumberOnTShirt { get; private set; }
         public byte[] Photo { get; private set; }
         public Team Team { get; private set; }
+        public IEnumerable<Goal> Goals { get; set; }
         public IEnumerable<string> LikedBy => _likedBy;
     }
 }

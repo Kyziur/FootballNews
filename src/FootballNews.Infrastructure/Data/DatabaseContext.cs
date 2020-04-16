@@ -21,6 +21,7 @@ namespace FootballNews.Infrastructure.Data
         public DbSet<League> Leagues { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Game> Games { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace FootballNews.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new LeagueConfiguration());
             modelBuilder.ApplyConfiguration(new TeamConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

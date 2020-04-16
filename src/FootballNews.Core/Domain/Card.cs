@@ -2,6 +2,7 @@
 {
     public class Card
     {
+        protected Card(){}
         public Card(CardColor color, string gaveTo)
         {
             GuardExtensions.ThrowIfNull(color, nameof(color));
@@ -11,6 +12,9 @@
         }
 
         public CardColor Color { get; }
+        public Game InGame { get; set; }
+        public int Minute { get; set; }
+        public int Seconds { get; set; }
         public string For { get; }
     }
 }

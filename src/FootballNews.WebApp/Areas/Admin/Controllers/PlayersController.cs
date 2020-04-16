@@ -3,9 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
+using FootballNews.WebApp.Areas.Admin.ViewModels.Game;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Player;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using X.PagedList;
 
 namespace FootballNews.WebApp.Areas.Admin.Controllers
@@ -131,6 +133,16 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetByTeam(string team)
+        {
+            var players = await _playerRepository.GetByTeam(team);
+            var playersData =
+                players.Select(x => new PlayerJsonModel(x.Id.ToString(), x.FirstName, x.LastName));
+            var playersAsJson = JsonConvert.SerializeObject(playersData);
+            return Ok(playersAsJson);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace FootballNews.Core.Repositories
         Task Create(Player player);
         Task Update(Player player);
         Task Delete(Player player);
+        Task<IEnumerable<Player>> GetByTeam(string team);
     }
 }

@@ -43,5 +43,12 @@
     <_ContentIncludedByDefault Remove="Views\League\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Views\League\Update.cshtml" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\Games\EditorTemplates\Goal.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

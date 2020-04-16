@@ -21,7 +21,7 @@
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div class="form-row d-flex justify-content-between">
-            <div class="form-group ">
+            <div class="form-group">
                 <div class="custom-file">
                     <label asp-for="Image">Choose picture</label>
                     <input accept="image/png, image/jpeg" type="file" class="custom-file-input" asp-for="Image">
@@ -56,6 +56,8 @@
         $(document).ready(function() {
           $('.summernote').summernote();
         });
+        
+        
 
         $('input[type="file"]').on('change',function(){
             const fileName = $(this).val();

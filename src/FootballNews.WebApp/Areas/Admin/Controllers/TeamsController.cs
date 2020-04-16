@@ -71,7 +71,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             {
                 Id = team.Id,
                 Name = team.Name,
-                SelectedLeagueId = team.League.Id.ToString(),
+                SelectedLeagueId = team.League?.Id.ToString(),
                 Leagues = leagues.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList()
             };
 
