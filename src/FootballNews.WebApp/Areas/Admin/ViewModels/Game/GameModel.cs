@@ -21,6 +21,7 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Game
 
     public class GoalModel
     {
+        public string ShooterName { get; set; }
         public string Shooter { get; set; }
         public double Time { get; set; }
     }

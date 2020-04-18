@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace FootballNews.Core.Domain
 {
     public class Game
     {
+        private const int WinPoints = 3;
+        private const int DrawPoints = 1;
         protected Game()
         {
         }
@@ -27,6 +30,25 @@ namespace FootballNews.Core.Domain
         {
             Report = report;
         }
+
+        public void UpdateTeamsPoints()
+        {
+            if (HomeTeamScore() == AwayTeamScore())
+            {
+                HomeTeam.AddPoints(DrawPoints);
+                AwayTeam.AddPoints(DrawPoints);
+                return;
+            }
+
+            if (HomeTeamScore() > AwayTeamScore())
+            {
+                HomeTeam.AddPoints(WinPoints);
+            }
+            else
+            {
+                AwayTeam.AddPoints(WinPoints);
+            }
+        }
         
         public IEnumerable<Goal> Goals { get; set; }
         public Guid HomeTeamId { get; private set; }
@@ -34,8 +56,8 @@ namespace FootballNews.Core.Domain
         public Guid AwayTeamId { get; private set; }
         public Team AwayTeam { get; private set; }
 
-        public int HomeTeamScore => Goals.Count(x => x.Team.Id == HomeTeamId);
-        public int AwayTeamScore => Goals.Count(x => x.Team.Id == AwayTeamId);
+        public int HomeTeamScore() => Goals.Count(x => x.Team.Id == HomeTeam.Id);
+        public int AwayTeamScore() => Goals.Count(x => x.Team.Id == AwayTeam.Id);
 
 
     }

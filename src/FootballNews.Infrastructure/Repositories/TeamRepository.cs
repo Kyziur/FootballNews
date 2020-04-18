@@ -59,5 +59,10 @@ namespace FootballNews.Infrastructure.Repositories
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Team>> GetByLeagueName(string league)
+        {
+            return await _context.Teams.Include(x => x.League).Where(x => x.League.Name == league).OrderByDescending(x => x.Points).ToListAsync();
+        }
     }
 }

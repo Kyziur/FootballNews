@@ -38,7 +38,7 @@ namespace FootballNews.WebApp.Controllers
                 Text = x.Text,
                 ParentId = x.ParentComment?.Id,
                 CreatedDate = x.CreatedAt,
-                FullName = "Some imaginated user"
+                FullName = x.Author.UserName
             });
             return Ok(model);
         }

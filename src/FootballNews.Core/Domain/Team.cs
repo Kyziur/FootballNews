@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FootballNews.Core.Domain
 {
@@ -32,7 +33,7 @@ namespace FootballNews.Core.Domain
             League = league;
         }
 
-        private void AddPoints(int points)
+        public void AddPoints(int points)
         {
             Points += points;
         }
@@ -42,6 +43,13 @@ namespace FootballNews.Core.Domain
         public int Points { get; private set; }
         public League League { get; private set; }
         public IEnumerable<Game> HomeMatches { get; set; }
+
+        public int GetGoals()
+        {
+            var goalsOnHome = HomeMatches.Count(x => x.Goals.Any(y => y.Team.Id == Id));
+            var goalsOnAway = AwayMatches.Count(x => x.Goals.Any(y => y.Team.Id == Id));
+            return goalsOnAway + goalsOnHome;
+        }
         public IEnumerable<Game> AwayMatches { get; set; }
         public IEnumerable<Player> Players => _players;
         public IEnumerable<string> Trophies => _thropies;

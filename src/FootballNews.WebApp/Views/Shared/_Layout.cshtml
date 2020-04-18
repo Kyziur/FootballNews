@@ -44,9 +44,9 @@
 
 <script src="~/js/dist/jquery/jquery.min.js"></script>
 <script src="~/js/dist/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="~/js/index.min.js" asp-append-version="true"></script>
+<script src="~/js/src/site.js" asp-append-version="true"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
-@RenderSection("Scripts", false)
+@await RenderSectionAsync("Scripts", false)
 
 </body>
 </html>

@@ -11,6 +11,7 @@ namespace FootballNews.Infrastructure.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name);
             builder.Property(x => x.Points);
+            builder.HasOne(x => x.League).WithMany(x => x.Teams);
             builder.HasMany(x => x.Players).WithOne(x => x.Team);
             builder.HasMany(x => x.AwayMatches).WithOne(x => x.AwayTeam);
             builder.HasMany(x => x.HomeMatches).WithOne(x => x.HomeTeam);

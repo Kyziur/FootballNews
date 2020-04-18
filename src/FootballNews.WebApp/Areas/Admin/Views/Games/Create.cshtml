@@ -14,7 +14,6 @@
 
         <div class="d-flex justify-content-between">
             <div class="justify-content-center">
-
                 <div class="form-group">
                     <label asp-for="SelectedHomeTeam"></label>
                     <select asp-for="SelectedHomeTeam" id="homeTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" data-live-search="true">
@@ -22,41 +21,31 @@
                     </select>
                     <span asp-validation-for="SelectedHomeTeam" class="text-danger"></span>
                 </div>
-
-                <div class="form-inline my-1 d-flex flex-column" id="homeTeamGoalsWrapper">
-                    @* <div id="homeTeamGoals_0"> *@
-                    @*     <select asp-for="HomeTeamGoals[0].Shooter" id="homeTeamShooter_0" class="selectpicker form-control mr-1" data-live-search="true" disabled="disabled"> *@
-                    @*         <option selected="selected" disabled="disabled">Select player...</option> *@
-                    @*     </select> *@
-                    @*     <input type="number" class="form-control-sm" asp-for="HomeTeamGoals[0].Time" placeholder="minuty i sekundy" disabled="disabled"/> *@
-                    @* </div> *@
-                </div>
-                <button class="btn btn-primary" id="homeTeamGoalsBtn" disabled="disabled">Dodaj gola</button>
+                <div class="form-inline my-1 d-flex flex-column" id="homeTeamGoalsWrapper"></div>
+                <button type="button" class="btn btn-primary" id="homeTeamGoalsBtn" disabled="disabled">Dodaj gola</button>
             </div>
-            <div class="">
+            <div class="justify-content-center">
                 <div class="form-group">
                     <label asp-for="SelectedAwayTeam"></label>
                     <select asp-for="SelectedAwayTeam" id="awayTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" data-live-search="true">
+                        <option selected="selected" disabled="disabled" value="-1">Select team...</option>
                     </select>
                     <span asp-validation-for="SelectedAwayTeam" class="text-danger"></span>
                 </div>
-                <div class="form-inline my-1 d-flex flex-column" id="awayTeamGoals">
-                    <select asp-for="AwayTeamGoals[0].Shooter" id="awayTeamGoalsSelect_0" class="selectpicker form-control" data-live-search="true"></select>
-                    <input type="number" class="form-control-sm" asp-for="AwayTeamGoals[0].Time" placeholder="minuty i sekundy"/>
-                </div>
-                <a class="btn btn-primary">Dodaj gola</a>
+                <div class="form-inline my-1 d-flex flex-column" id="awayTeamGoalsWrapper"></div>
+                <button type="button" class="btn btn-primary" id="awayTeamGoalsBtn" disabled="disabled">Dodaj gola</button>
             </div>
-        </div>
-        <div class="form-group mt-3">
-            <label asp-for="Date"></label>
-            <input type="date" class="form-control-sm" asp-for="Date"/>
-            <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group mt-3">
             <label asp-for="Report">Opis przebiegu spotkania</label>
             <textarea asp-for="Report" class="summernote"></textarea>
             <span asp-validation-for="Report" class="text-danger"></span>
         </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Date"></label>
+                    <input type="date" class="form-control-sm" asp-for="Date"/>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
         <div class="form-group d-flex justify-content-end p-2">
             <button type="submit" class="btn btn-outline-success">Submit</button>
         </div>
@@ -65,11 +54,10 @@
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial"/>
     <partial name="_SelectPickerScriptPartial"/>
     <script>
-    const goalFormPart = 
-    `<div class="form-inline my-1" id="homeTeamGoals">
+    const homeGoalFormPart = 
+    `<div class="form-inline my-1" data-id="homeTeamGoals">
         <select name="HomeTeamGoals[ValueToReplace].Shooter" id="HomeTeamGoals_ValueToReplace__Shooter" class=" form-control mr-1" data-live-search="true">
             <option selected="selected" disabled="disabled">Select player...</option>
         </select>
@@ -78,59 +66,96 @@
     </div>
     `;
     
+        const awayGoalFormPart = 
+        `<div class="form-inline my-1" data-id="awayTeamGoals">
+            <select name="AwayTeamGoals[ValueToReplace].Shooter" id="AwayTeamGoals_ValueToReplace__Shooter" class=" form-control mr-1" data-live-search="true">
+                <option selected="selected" disabled="disabled">Select player...</option>
+            </select>
+            <input name="AwayTeamGoals[ValueToReplace].Time" id="AwayTeamGoals_ValueToReplace__Time" type="number" class="form-control-sm" placeholder="minuty i sekundy"/>
+            <button class="btn btn-sm btn-outline-danger ml-1 removeAwayGoal"><i class="fas fa-minus-circle"></i></button>
+        </div>
+        `;
     
-    $( document ).ready(function() {
+    
+document.addEventListener( 'DOMContentLoaded',  async function (){
         const homeTeamSelectElement = $('#homeTeamSelect');
-        let numberOfHomeGoals = 0;
         const addHomeTeamGoalBtn = $('#homeTeamGoalsBtn');
-                addHomeTeamGoalBtn.on("click",function(){
-                    const homeTeamGoalsPart = $('#homeTeamGoals_0');
-                    const regex = /ValueToReplace/gi;
-                    let replacedFormPart = goalFormPart.replace(regex, numberOfHomeGoals.toString());
-                    $('#homeTeamGoalsWrapper').append(replacedFormPart);
-                    $('.selectpicker').selectpicker('refresh');
-                    numberOfHomeGoals++;
-                    
-                });
-        homeTeamSelectElement.on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue){
-            console.log('Changed home team select.');
+        let numberOfHomeGoals = 0;
+        let homeTeamPlayers;
+        const awayTeamSelectElement = $('#awayTeamSelect');
+        const addAwayTeamGoalBtn = $('#awayTeamGoalsBtn');
+        let numberOfAwayGoals = 0;
+        let awayTeamPlayers;
+        
+        addHomeTeamGoalBtn.on("click",function(){
+            const regex = /ValueToReplace/gi;
+            let replacedFormPart = homeGoalFormPart.replace(regex, numberOfHomeGoals.toString());
+            replacedFormPart = $(replacedFormPart);
+            let select = replacedFormPart.find('select');
+            $.each(homeTeamPlayers, function(index, item) {
+                  select.append(new Option(`${item.FirstName} ${item.LastName}`, item.Id));
+            });
+            console.log(replacedFormPart);
+            $('#homeTeamGoalsWrapper').append(replacedFormPart);
+            numberOfHomeGoals++;                    
+        });
+        
+        homeTeamSelectElement.on('changed.bs.select', async function (e, clickedIndex, isSelected, previousValue){
+            $('#homeTeamGoalsWrapper').empty();
             addHomeTeamGoalBtn.removeAttr('disabled');
+            const players = await getPlayers(e.target.value);
+            homeTeamPlayers = JSON.parse(players);
         });
         
         $('#homeTeamGoalsWrapper').on("click", ".removeHomeGoal", function(e){
             e.preventDefault();
             $(this).parent("div").remove();
             numberOfHomeGoals--;
-            reindex('homeTeamGoalsWrapper', numberOfHomeGoals);
+            reindex('homeTeamGoals');
         })
         
-        function reindex(wrapperId, numberOfGoals){
-            // let elements = $("#homeTeamGoalsWrapper :input").not(':button, :hidden');
-            let elements = $("#homeTeamGoals");
-            let filteredElements = filterInputsWithEmptyId(elements);
+        //---------away team-----------//
+                addAwayTeamGoalBtn.on("click",function(){
+                    const regex = /ValueToReplace/gi;
+                    let replacedFormPart = awayGoalFormPart.replace(regex, numberOfAwayGoals.toString());
+                    replacedFormPart = $(replacedFormPart);
+                    let select = replacedFormPart.find('select');
+                    $.each(awayTeamPlayers, function(index, item) {
+                          select.append(new Option(`${item.FirstName} ${item.LastName}`, item.Id));
+                    });
+                    console.log(replacedFormPart);
+                    $('#awayTeamGoalsWrapper').append(replacedFormPart);
+                    numberOfAwayGoals++;                    
+                });
+                
+                awayTeamSelectElement.on('changed.bs.select', async function (e, clickedIndex, isSelected, previousValue){
+                    $('#awayTeamGoalsWrapper').empty();
+                    addAwayTeamGoalBtn.removeAttr('disabled');
+                    const players = await getPlayers(e.target.value);
+                    awayTeamPlayers = JSON.parse(players);
+                });
+                
+                $('#awayTeamGoalsWrapper').on("click", ".removeAwayGoal", function(e){
+                    e.preventDefault();
+                    $(this).parent("div").remove();
+                    numberOfAwayGoals--;
+                    reindex('awayTeamGoals');
+                })
+        
+        function reindex(id){
+            let elements = $("div[data-id="+id+"]");
             const regexForName = /[^[\]]+(?=])/g;
             const regexForId = /_(.*?)_/g;
-            for(let i=0; i< numberOfGoals; i++){
-                let element = filteredElements[i];                   
-                element.id = element.id.replace(regexForId, `_${i.toString()}_`);
-                element.name = element.name.replace(regexForName, i.toString());
-                console.log('element', element);
-            }
-        }
-        
-        function reindexInputs(htmlCollection){}
-        
-        function filterInputsWithEmptyId(htmlCollection){
-            console.log(htmlCollection);
-            let filteredCollection =[];
-            for(let i=0; i< htmlCollection.length; i++){
-                if(htmlCollection[i].id){
-                    filteredCollection.push(htmlCollection[i]);
+            for(let i=0; i< elements.length; i++){
+                let element = $(elements[i]); 
+                let inputs = element.find(':input').not('button');
+                for (let j=0; j<inputs.length; j++){
+                    inputs[j].id = inputs[j].id.replace(regexForId, `_${i.toString()}_`);
+                    inputs[j].name = inputs[j].name.replace(regexForName, i.toString());
                 }
             }
-            console.log(filteredCollection);
-            return filteredCollection;
         }
+        
     });
     
     </script>

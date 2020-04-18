@@ -35,8 +35,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 Date = x.Date.ToShortDateString(),
                 AwayTeam = x.AwayTeam.Name,
                 HomeTeam = x.HomeTeam.Name,
-                AwayTeamScore = x.AwayTeamScore,
-                HomeTeamScore = x.HomeTeamScore
+                AwayTeamScore = x.AwayTeamScore(),
+                HomeTeamScore = x.HomeTeamScore()
             });
 
             return View(model);
@@ -46,13 +46,6 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
         {
             var teams = await _teamRepository.GetAll();
             return await teams.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToListAsync();
-        }
-
-        private async Task<IList<SelectListItem>> GetPlayersAsSelectList()
-        {
-            var players = await _playerRepository.GetAll();
-            return await players.Select(x => new SelectListItem($"{x.LastName} {x.FirstName}", x.Id.ToString()))
-                .ToListAsync();
         }
 
         [HttpGet]
@@ -92,16 +85,80 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
 
             var game = new Game(Guid.NewGuid(), homeTeam, awayTeam, model.Date);
             game.SetReport(model.Report);
-
+            
             var homeTeamGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
             var awayTeamGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
-            var goalsOverall = homeTeamGoals.Concat(awayTeamGoals);
+            var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
             //TODO: Change to set instead
             game.Goals = goalsOverall;
-                
+            game.UpdateTeamsPoints();
+
             await _gameRepository.Create(game);
             
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var game = await _gameRepository.GetById(id);
+            
+            var gameModel = new GameModel
+            {
+                Id = game.Id,
+                Date = game.Date,
+                Teams = await GetAllTeamsAsSelectList(),
+                AwayTeamGoals = game.Goals.Where(x => x.Team.Id == game.AwayTeamId).Select(y => new GoalModel
+                {
+                    ShooterName = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
+                    Shooter = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
+                    Time = (int)y.Time
+                }).ToList(),
+                HomeTeamGoals = game.Goals.Where(x => x.Team.Id == game.HomeTeamId).Select(y => new GoalModel
+                {
+                    ShooterName = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
+                    Shooter = y.Shooter.Id.ToString(),
+                    Time = (int)y.Time
+                }).ToList(),
+                Report = game.Report,
+                SelectedAwayTeam = game.AwayTeamId.ToString(),
+                SelectedHomeTeam = game.HomeTeamId.ToString()    
+            };
+
+            return View(gameModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(GameModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var game = await _gameRepository.GetById(model.Id);
+            game.SetReport(model.Report);
+            
+            await _gameRepository.Create(game);
+            
+            return RedirectToAction(nameof(Index));
+        }
+        
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var league = await _gameRepository.GetById(id);
+                await _gameRepository.Delete(league);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not delete game with id: {id}");
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

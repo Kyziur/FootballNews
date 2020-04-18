@@ -33,7 +33,9 @@ namespace FootballNews.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new LeagueConfiguration());
             modelBuilder.ApplyConfiguration(new TeamConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new GoalConfiguration());
+            modelBuilder.ApplyConfiguration(new GameConfiguration());
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

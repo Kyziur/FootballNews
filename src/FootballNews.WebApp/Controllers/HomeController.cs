@@ -39,6 +39,7 @@ namespace FootballNews.WebApp.Controllers
             if (!string.IsNullOrWhiteSpace(league))
             {
                 articles = articles.Where(x => x.League.Name == league);
+                ViewBag.League = league;
             }
             
             var articlesOrderedByCreatedDate = articles.ToList().OrderByDescending(x => x.CreatedAt);

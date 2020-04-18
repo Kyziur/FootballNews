@@ -1,1 +1,76 @@
-﻿
+﻿@model FootballNews.WebApp.Areas.Admin.ViewModels.Game.GameModel
+@{
+    ViewData["Title"] = "Add game";
+    Layout = "_Layout";
+}
+<div class="container shadow">
+    <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
+        <header class="">
+            <h2>Add</h2>
+        </header>
+    </div>
+    <form asp-area="Admin" asp-controller="Games" asp-action="Update" class="container border rounded box-shadow p-3" method="post">
+        <input type="hidden" asp-for="Id"/>
+        <h2 class="text-center">Mecz</h2>
+
+        <div class="d-flex justify-content-between">
+            <div class="justify-content-center">
+                <div class="form-group">
+                    <label asp-for="SelectedHomeTeam"></label>
+                    <select asp-for="SelectedHomeTeam" id="homeTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" disabled="disabled" data-live-search="true">
+                    </select>
+                    <span asp-validation-for="SelectedHomeTeam" class="text-danger"></span>
+                </div>
+                <div class="form-inline my-1 d-flex flex-column" id="homeTeamGoalsWrapper">
+                    <h6>Goals</h6>
+                    @foreach (var goal in Model.HomeTeamGoals)
+                    {
+                        <div class="form-inline my-1">
+                            <span><strong>@goal.ShooterName</strong> Minute: @goal.Time</span> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="justify-content-center">
+                <div class="form-group">
+                    <label asp-for="SelectedAwayTeam"></label>
+                    <select asp-for="SelectedAwayTeam" id="awayTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" disabled="disabled" data-live-search="true">
+                    </select>
+                    <span asp-validation-for="SelectedAwayTeam" class="text-danger"></span>
+                </div>
+                <div class="form-inline my-1 d-flex flex-column" id="awayTeamGoalsWrapper">
+                <h6>Goals</h6>
+                    @foreach (var goal in Model.AwayTeamGoals)
+                    {
+                        <div class="form-inline my-1">
+                            <span><strong>@goal.ShooterName</strong> Minute: @goal.Time</span> 
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-3">
+            <label asp-for="Report">Opis przebiegu spotkania</label>
+            <textarea asp-for="Report" class="summernote"></textarea>
+            <span asp-validation-for="Report" class="text-danger"></span>
+        </div>
+                <div class="form-group mt-3">
+                    <label asp-for="Date"></label>
+                    <input type="date" class="form-control-sm" asp-for="Date"/>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+        <div class="form-group d-flex justify-content-end p-2">
+            <button type="submit" class="btn btn-outline-success">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <partial name="_SelectPickerScriptPartial"/>
+    <script>
+                $(document).ready(function() {
+                  $('.summernote').summernote();
+                });
+    </script>
+}

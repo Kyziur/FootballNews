@@ -5,10 +5,6 @@ namespace FootballNews.Core.Domain
 {
     public class League
     {
-        private IList<Article> _articles = new List<Article>();
-        // private IList<Game> _games = new List<Game>();
-        private IList<Team> _teams = new List<Team>();
-
         protected League()
         {
         }
@@ -29,7 +25,7 @@ namespace FootballNews.Core.Domain
             Name = name;
         }
 
-        public IEnumerable<Article> Articles { get; private set; }
-        public IEnumerable<Team> Teams { get; private set; }
+        public IList<Article> Articles { get; private set; }
+        public IList<Team> Teams { get; private set; }
     }
 }

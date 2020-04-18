@@ -16,8 +16,6 @@ namespace FootballNews.Infrastructure.Data.Configuration
                 .OnDelete(DeleteBehavior.SetNull);
             builder.HasOne(x => x.HomeTeam).WithMany(x => x.HomeMatches).HasForeignKey(x => x.HomeTeamId)
                 .OnDelete(DeleteBehavior.SetNull);
-            builder.Ignore(x => x.AwayTeamScore);
-            builder.Ignore(x => x.HomeTeamScore);
         }
     }
 }

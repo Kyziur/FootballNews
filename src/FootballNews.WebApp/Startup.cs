@@ -26,9 +26,14 @@ namespace FootballNews.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Postgres
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
+            //MSSQL
+            // services.AddDbContext<DatabaseContext>(options =>
+            //     options.UseSqlServer(
+            //         Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<DatabaseContext>().AddDefaultUI().AddDefaultTokenProviders();
 
