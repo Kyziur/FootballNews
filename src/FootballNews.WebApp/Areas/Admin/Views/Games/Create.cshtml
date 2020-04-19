@@ -95,7 +95,6 @@ document.addEventListener( 'DOMContentLoaded',  async function (){
             $.each(homeTeamPlayers, function(index, item) {
                   select.append(new Option(`${item.FirstName} ${item.LastName}`, item.Id));
             });
-            console.log(replacedFormPart);
             $('#homeTeamGoalsWrapper').append(replacedFormPart);
             numberOfHomeGoals++;                    
         });

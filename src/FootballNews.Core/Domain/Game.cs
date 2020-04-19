@@ -59,6 +59,5 @@ namespace FootballNews.Core.Domain
         public int HomeTeamScore() => Goals.Count(x => x.Team.Id == HomeTeam.Id);
         public int AwayTeamScore() => Goals.Count(x => x.Team.Id == AwayTeam.Id);
 
-
     }
 }

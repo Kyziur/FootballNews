@@ -15,7 +15,9 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Game
         [DisplayName("Goście")]
         public string SelectedAwayTeam { get; set; }
         public IList<GoalModel> HomeTeamGoals { get; set; }
+        public IList<SelectListItem> HomeTeamPlayers { get; set; }
         public IList<GoalModel> AwayTeamGoals { get; set; }
+        public IList<SelectListItem> AwayTeamPlayers { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 
@@ -23,6 +25,6 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Game
     {
         public string ShooterName { get; set; }
         public string Shooter { get; set; }
-        public double Time { get; set; }
+        public int Time { get; set; }
     }
 }

@@ -71,6 +71,12 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             return goals;
         }
 
+        private async Task<IList<SelectListItem>> GetPlayersByTeamAsSelectList(string team)
+        {
+            var players = await _playerRepository.GetByTeam(team);
+            return players.Select(x => new SelectListItem($"{x.FirstName} {x.LastName}", x.Id.ToString())).ToList();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(GameModel model)
         {
@@ -89,7 +95,6 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var homeTeamGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
             var awayTeamGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
             var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
-            //TODO: Change to set instead
             game.Goals = goalsOverall;
             game.UpdateTeamsPoints();
 
@@ -111,15 +116,17 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 AwayTeamGoals = game.Goals.Where(x => x.Team.Id == game.AwayTeamId).Select(y => new GoalModel
                 {
                     ShooterName = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
-                    Shooter = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
+                    Shooter = y.Shooter.Id.ToString(),
                     Time = (int)y.Time
                 }).ToList(),
+                AwayTeamPlayers = await GetPlayersByTeamAsSelectList(game.AwayTeam.Id.ToString()),
                 HomeTeamGoals = game.Goals.Where(x => x.Team.Id == game.HomeTeamId).Select(y => new GoalModel
                 {
                     ShooterName = $"{y.Shooter.FirstName} {y.Shooter.LastName}",
                     Shooter = y.Shooter.Id.ToString(),
                     Time = (int)y.Time
                 }).ToList(),
+                HomeTeamPlayers = await GetPlayersByTeamAsSelectList(game.HomeTeam.Id.ToString()),
                 Report = game.Report,
                 SelectedAwayTeam = game.AwayTeamId.ToString(),
                 SelectedHomeTeam = game.HomeTeamId.ToString()    
@@ -139,8 +146,20 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var game = await _gameRepository.GetById(model.Id);
             game.SetReport(model.Report);
             
-            await _gameRepository.Create(game);
             
+            //TODO: If game that was in past and its score has been already calculated then change logic of
+            //UpdateTeamsPoints because right now it will calculate points again on update if score changed.
+            //It should involve removing points that has been already added because it will result with multiple points added for one game.
+            if (model.HomeTeamGoals.Count != game.HomeTeamScore() || model.AwayTeamGoals.Count != game.AwayTeamScore())
+            {
+                var homeTeamGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
+                var awayTeamGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
+                var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
+                game.Goals = goalsOverall;
+                game.UpdateTeamsPoints();
+            }
+            
+            await _gameRepository.Update(game);
             return RedirectToAction(nameof(Index));
         }
         
