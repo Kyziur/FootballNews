@@ -118,17 +118,14 @@
             const addAwayTeamGoalBtn = $('#awayTeamGoalsBtn');
             let numberOfAwayGoals = @Model.AwayTeamGoals.Count;
             let awayTeamPlayers;
+
+            const homePlayers = await getPlayers(homeTeamSelectElement.val());
+            homeTeamPlayers = JSON.parse(homePlayers);
+            addHomeTeamGoalBtn.removeAttr('disabled');
+            const awayPlayers = await getPlayers(awayTeamSelectElement.val());
+            awayTeamPlayers = JSON.parse(awayPlayers);
+            addAwayTeamGoalBtn.removeAttr('disabled');
            
-            if(numberOfHomeGoals !== 0 || numberOfAwayGoals !== 0){
-                console.log('home',numberOfHomeGoals);
-                console.log('away',numberOfAwayGoals);
-                const homePlayers = await getPlayers(homeTeamSelectElement.val());
-                homeTeamPlayers = JSON.parse(homePlayers);
-                addHomeTeamGoalBtn.removeAttr('disabled');
-                const awayPlayers = await getPlayers(awayTeamSelectElement.val());
-                awayTeamPlayers = JSON.parse(awayPlayers);
-                addAwayTeamGoalBtn.removeAttr('disabled');
-            }
             
             addHomeTeamGoalBtn.on("click",function(){
                 const regex = /ValueToReplace/gi;

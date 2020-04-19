@@ -7,6 +7,7 @@ using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Internal;
 using X.PagedList;
 using Goal = FootballNews.Core.Domain.Goal;
 
@@ -91,9 +92,19 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
 
             var game = new Game(Guid.NewGuid(), homeTeam, awayTeam, model.Date);
             game.SetReport(model.Report);
-            
-            var homeTeamGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
-            var awayTeamGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
+            List<Goal> homeTeamGoals = new List<Goal>();
+            List<Goal> awayTeamGoals = new List<Goal>();
+            if (model.HomeTeamGoals != null && model.HomeTeamGoals.Any())
+            {
+               var homeGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
+               homeTeamGoals = homeGoals.ToList();
+            }
+
+            if (model.AwayTeamGoals != null && model.AwayTeamGoals.Any())
+            {
+                var awayGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
+                awayTeamGoals = awayGoals.ToList();
+            }
             var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
             game.Goals = goalsOverall;
             game.UpdateTeamsPoints();
