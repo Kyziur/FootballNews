@@ -64,5 +64,11 @@ namespace FootballNews.Infrastructure.Repositories
             _context.Games.Remove(game);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Game>> GetUpcoming()
+        {
+            return await _context.Games.Include(x => x.AwayTeam).Include(x => x.HomeTeam)
+                .Where(x => x.Date >= DateTime.Today).ToListAsync();
+        }
     }
 }
