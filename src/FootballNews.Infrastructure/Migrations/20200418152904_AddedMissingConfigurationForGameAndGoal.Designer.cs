@@ -192,9 +192,6 @@ namespace FootballNews.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Birthdate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
