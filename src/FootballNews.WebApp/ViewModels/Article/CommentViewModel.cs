@@ -13,5 +13,9 @@ namespace FootballNews.WebApp.ViewModels.Article
         public Guid? ParentId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string FullName { get; set; }
+        public bool CreatedByCurrentUser { get; set; }
+        public bool CreatedByAdmin { get; set; }
+        public bool CurrentUserIsAdmin { get; set; }
+        public DateTime UpdatedDate { get; set; }
     }
 }

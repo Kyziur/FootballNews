@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
+using FootballNews.WebApp.Extensions;
 using FootballNews.WebApp.ViewModels.Article;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,15 @@ namespace FootballNews.WebApp.Controllers
     {
         private readonly IArticleRepository _articleRepository;
         private readonly UserManager<User> _userManager;
+        private readonly ICommentRepository _commentRepository;
 
-        public CommentsController(IArticleRepository articleRepository, UserManager<User> userManager)
+        public CommentsController(IArticleRepository articleRepository, UserManager<User> userManager, ICommentRepository commentRepository)
         {
             _articleRepository = articleRepository;
             _userManager = userManager;
+            _commentRepository = commentRepository;
         }
+
         
         [HttpGet("{articleTitle}")]
         public async Task<IActionResult> Get(string articleTitle)
@@ -38,7 +42,11 @@ namespace FootballNews.WebApp.Controllers
                 Text = x.Text,
                 ParentId = x.ParentComment?.Id,
                 CreatedDate = x.CreatedAt,
-                FullName = x.Author.UserName
+                FullName = x.Author.UserName,
+                CreatedByCurrentUser = x.Author.UserName == User.Identity.Name,
+                CreatedByAdmin = _userManager.IsInRoleAsync(x.Author, Role.Admin).Result,
+                CurrentUserIsAdmin = User.IsInRole(Role.Admin),
+                UpdatedDate = x.UpdatedAt
             });
             return Ok(model);
         }
@@ -72,5 +80,42 @@ namespace FootballNews.WebApp.Controllers
             model.Id = comment.Id;
             return Ok(model);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(CommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Missing data in body.");
+            }
+
+            if (!model.Id.HasValue)
+            {
+                return NotFound();
+            }
+
+            var comment = await _commentRepository.GetById(model.Id.Value);
+            comment.SetText(model.Text);
+            await _commentRepository.Update(comment);
+            model.UpdatedDate = comment.UpdatedAt;
+            model.Text = comment.Text;
+            model.CreatedDate = comment.CreatedAt;
+            return Ok(model);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var comment = await _commentRepository.GetById(Guid.Parse(id));
+            if (comment is null)
+            {
+                return NotFound();
+            }
+
+            await _commentRepository.Delete(comment);
+            return Ok();
+        }
     }
+    
+    
 }

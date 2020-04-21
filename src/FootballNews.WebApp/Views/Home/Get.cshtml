@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @model FootballNews.WebApp.ViewModels.Article.ArticleModel
 
 @{
@@ -56,28 +57,48 @@ else
                             id: comment.Id,
                             created: comment.CreatedDate,
                             content: comment.Text,
-                            modified: '2015-10-01',
+                            modified: comment.UpdatedDate,
                             fullname: comment.FullName,
-                            parent: comment.ParentId === undefined || comment.ParentId === null ? null : comment.ParentId
+                            parent: comment.ParentId === undefined || comment.ParentId === null ? null : comment.ParentId,
+                            createdByCurrentUser: comment.CreatedByCurrentUser,
+                            createdByAdmin: comment.CreatedByAdmin,
+                            currentUserIsAdmin: comment.CurrentUserIsAdmin
                         }));
         }else{
             model = {
                 id: data.Id,
                 created: data.CreatedDate,
                 content: data.Text,
-                modified: '2015-10-01',
+                modified: data.UpdatedDate,
                 fullname: data.FullName,
-                parent: data.ParentId === undefined || data.ParentId === null ? null : data.ParentId
+                createdByCurrentUser: data.CreatedByCurrentUser,
+                                            createdByAdmin: data.CreatedByAdmin,
+                                            currentUserIsAdmin: data.CurrentUserIsAdmin,
+                parent: data.ParentId === undefined || data.ParentId === null ? null : data.ParentId,
             }
         }
            
         return model;
     }
     $('#comments-container').comments({
-    enableDeleting: false,
-    enableDeletingCommentWithReplies: false,
+    currentUserIsAdmin: '@User.IsInRole(Role.Admin)',
+    currentUserId: '@UserManager.GetUserId(User)',
     enableReplying: true,
+    enableEditing: true,
     enableUpvoting: false,
+    enableDeleting: true,
+    textareaPlaceholderText: "Dodaj komentarz",
+    newestText: "Najnowsze",
+    oldestText: "Najstarsze",
+    popularText: "Popularne",
+    sendText: "Wyślij",
+    replyText: "Odpowiedz",
+    noCommentsText: "Nie ma jeszcze żadnego komentarza",
+    editTextL: "Edytuj",
+    editedText: "Edytowano",
+    saveText: "Zapisz",
+    deleteText: "Usuń",
+    
     refresh: function() {
             $('#comments-container').addClass('rendered');
     },
@@ -88,6 +109,7 @@ else
             url: `/api/comments/${articleTitle}`,
             success: function(data) {
                 const comments = mapModelToComment(data);
+                console.log(comments);
                 success(comments);
             },
             error: error
@@ -100,20 +122,51 @@ else
             text: commentJSON.content,
             parentId: commentJSON.parent
         };
-                $.ajax({
-                    type: 'post',
-                    url: '/api/comments/',
-                    contentType: "application/json",
-                    data: JSON.stringify(comment),
-                    success: function(result) {
-                        const comments = mapModelToComment(result);
-                        success(comments)
-                    },
-                    error: function(error){
-                        console.log(error);
-                    }
+        $.ajax({
+        type: 'post',
+        url: '/api/comments/',
+        contentType: "application/json",
+        data: JSON.stringify(comment),
+        success: function(result) {
+            const comments = mapModelToComment(result);
+            success(comments)
+            },
+            error: function(error){
+            console.log(error);
+        }
+        });
+    },
+    putComment: function(commentJSON, success, error) {
+        console.log(commentJSON);
+        const articleTitle = document.getElementById('articleTitle').innerText;
+        const comment = {
+            articleTitle: articleTitle,
+            id: commentJSON.id,
+            text: commentJSON.content,
+            parentId: commentJSON.parent
+        };
+        $.ajax({
+            type: 'put',
+            url: '/api/comments/',
+            contentType: "application/json",
+            data: JSON.stringify(comment),
+            success: function(comment) {
+                console.log(comment);
+                const result = mapModelToComment(comment);
+                console.log(result);
+                success(result)
+            },
+            error: error
+        });
+        },
+    deleteComment: function(commentJSON, success, error) {
+                    $.ajax({
+                    url: '/api/comments/' + commentJSON.id,
+                    type: 'DELETE',
+                    success: success,
+                    error: error
                 });
-            }
+        }
         
     });
 
