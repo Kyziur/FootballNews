@@ -3,7 +3,7 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject ILeagueRepository LeagueRepository
-<div class="d-flex align-items-center border-top border-bottom p-2 shadow">
+<div class="d-flex align-items-center border-top border-bottom p-2 shadow flex-wrap">
     <div class="justify-content-center d-flex w-100 navigation-bar">
         <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Main page</a>
         @if (SignInManager.IsSignedIn(User) && (User.IsInRole(Role.Admin) || User.IsInRole(Role.Editor)))
@@ -15,16 +15,22 @@
             <a class="menu-item" asp-area="Admin" asp-controller="Players" asp-action="Index">Players</a>
             <a class="menu-item" asp-area="Admin" asp-controller="Games" asp-action="Index">Games</a>
             <a class="menu-item" asp-area="Admin" asp-controller="Manage" asp-action="Index">Administration</a>
-            
         }
         else
         {
-            
             @foreach (var league in await LeagueRepository.GetAll())
             {
-                <a class="menu-item" asp-controller="Home" asp-action="Index" asp-all-route-data="@Context.GetQueryParameters()" asp-route-league="@league.Name">@league.Name</a>
+                <a class="menu-item" asp-controller="Home" asp-action="Index" asp-all-route-data="@Context.GetQueryParameters()" asp-area="" asp-route-league="@league.Name">@league.Name</a>
             }
         }
     </div>
+    <div class="break"></div>
+    <div class="justify-content-center d-flex w-100">
+        @foreach (var league in await LeagueRepository.GetAll())
+        {
+            <a class="menu-item" asp-controller="Home" asp-action="Index" asp-all-route-data="@Context.GetQueryParameters()" asp-area="" asp-route-league="@league.Name">@league.Name</a>
+        }
+    </div>
+
 </div>
 <div></div>
