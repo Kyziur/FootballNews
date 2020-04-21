@@ -20,6 +20,7 @@ namespace FootballNews.Infrastructure.Data.Configuration
             builder.HasOne(x => x.Author).WithMany(x => x.CreatedArticles);
             builder.Property(x => x.CreatedAt);
             builder.Property(x => x.UpdatedAt);
+            builder.HasMany(x => x.Comments).WithOne().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

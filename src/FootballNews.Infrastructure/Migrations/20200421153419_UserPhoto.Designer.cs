@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FootballNews.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200420174953_MissingBirthDatePlayer")]
-    partial class MissingBirthDatePlayer
+    [Migration("20200421153419_UserPhoto")]
+    partial class UserPhoto
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -302,6 +302,9 @@ namespace FootballNews.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -486,7 +489,8 @@ namespace FootballNews.Infrastructure.Migrations
                 {
                     b.HasOne("FootballNews.Core.Domain.Article", null)
                         .WithMany("Comments")
-                        .HasForeignKey("ArticleId");
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FootballNews.Core.Domain.User", "Author")
                         .WithMany()

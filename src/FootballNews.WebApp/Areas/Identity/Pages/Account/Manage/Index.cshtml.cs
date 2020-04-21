@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -36,18 +38,23 @@ namespace FootballNews.WebApp.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public byte[] PhotoAsBytes { get; set; }
+
+            public IFormFile Photo { get; set; }
         }
 
         private async Task LoadAsync(User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                PhotoAsBytes = user.Photo
             };
         }
 
@@ -88,6 +95,14 @@ namespace FootballNews.WebApp.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Photo != null)
+            {
+                await using var stream = new MemoryStream();
+                await Input.Photo.CopyToAsync(stream);
+                user.SetPhoto(stream.ToArray());
+                await _userManager.UpdateAsync(user);
+            }
+            
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

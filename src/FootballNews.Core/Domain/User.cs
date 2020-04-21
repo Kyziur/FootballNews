@@ -17,5 +17,11 @@ namespace FootballNews.Core.Domain
         }
         
         public IEnumerable<Article> CreatedArticles { get; private set; }
+        public byte[] Photo { get; private set; }
+
+        public void SetPhoto(byte[] photo)
+        {
+            Photo = photo;
+        }
     }
 }
