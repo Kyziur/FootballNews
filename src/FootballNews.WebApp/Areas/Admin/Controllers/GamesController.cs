@@ -107,7 +107,11 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             }
             var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
             game.Goals = goalsOverall;
-            game.UpdateTeamsPoints();
+            
+            if (!game.HasBeenPlayed && model.HasBeenPlayed)
+            {
+                game.UpdateTeamsPoints();
+            }
 
             await _gameRepository.Create(game);
             
@@ -140,7 +144,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                 HomeTeamPlayers = await GetPlayersByTeamAsSelectList(game.HomeTeam.Id.ToString()),
                 Report = game.Report,
                 SelectedAwayTeam = game.AwayTeamId.ToString(),
-                SelectedHomeTeam = game.HomeTeamId.ToString()    
+                SelectedHomeTeam = game.HomeTeamId.ToString(),
+                HasBeenPlayed = game.HasBeenPlayed
             };
 
             return View(gameModel);
@@ -163,10 +168,26 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             //It should involve removing points that has been already added because it will result with multiple points added for one game.
             if (model.HomeTeamGoals.Count != game.HomeTeamScore() || model.AwayTeamGoals.Count != game.AwayTeamScore())
             {
-                var homeTeamGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
-                var awayTeamGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
+                var homeTeamGoals = new List<Goal>();
+                if (model.HomeTeamGoals != null && model.HomeTeamGoals.Any())
+                { 
+                    var homeGoals = await GetGoalsFromGameModel(model.HomeTeamGoals, game);
+                    homeTeamGoals = await homeGoals.ToListAsync();
+                }
+
+                var awayTeamGoals = new List<Goal>();
+                if (model.AwayTeamGoals != null && model.AwayTeamGoals.Any())
+                {
+                    var awayGoals = await GetGoalsFromGameModel(model.AwayTeamGoals, game);
+                    awayTeamGoals = await awayGoals.ToListAsync();
+                }
+                
                 var goalsOverall = homeTeamGoals.Concat(awayTeamGoals).ToList();
                 game.Goals = goalsOverall;
+            }
+
+            if (!game.HasBeenPlayed && model.HasBeenPlayed)
+            {
                 game.UpdateTeamsPoints();
             }
             

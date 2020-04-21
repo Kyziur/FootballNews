@@ -25,13 +25,15 @@
                     <h6>Goals</h6>
                     @if (Model.HomeTeamGoals.Any())
                     {
-                        @for (var i=0; i< Model.HomeTeamGoals.Count(); i++)
+                        @for (var i = 0; i < Model.HomeTeamGoals.Count(); i++)
                         {
                             <div class="form-inline my-1" data-id="homeTeamGoals">
                                 <select asp-for="HomeTeamGoals[i].Shooter" asp-items="@Model.HomeTeamPlayers" class=" form-control mr-1" data-live-search="true">
                                 </select>
                                 <input asp-for="HomeTeamGoals[i].Time" type="number" class="form-control-sm" placeholder="minuta"/>
-                                <button class="btn btn-sm btn-outline-danger ml-1 removeHomeGoal"><i class="fas fa-minus-circle"></i></button>
+                                <button class="btn btn-sm btn-outline-danger ml-1 removeHomeGoal">
+                                    <i class="fas fa-minus-circle"></i>
+                                </button>
                             </div>
                         }
                     }
@@ -49,13 +51,15 @@
                     <h6>Goals</h6>
                     @if (Model.AwayTeamGoals.Any())
                     {
-                        @for (var i=0; i< Model.AwayTeamGoals.Count(); i++)
+                        @for (var i = 0; i < Model.AwayTeamGoals.Count(); i++)
                         {
                             <div class="form-inline my-1" data-id="awayTeamGoals">
                                 <select asp-for="AwayTeamGoals[i].Shooter" asp-items="@Model.AwayTeamPlayers" class=" form-control mr-1" data-live-search="true">
                                 </select>
                                 <input asp-for="AwayTeamGoals[i].Time" type="number" class="form-control-sm" placeholder="minuta"/>
-                                <button class="btn btn-sm btn-outline-danger ml-1 removeAwayGoal"><i class="fas fa-minus-circle"></i></button>
+                                <button class="btn btn-sm btn-outline-danger ml-1 removeAwayGoal">
+                                    <i class="fas fa-minus-circle"></i>
+                                </button>
                             </div>
                         }
                     }
@@ -68,11 +72,18 @@
             <textarea asp-for="Report" class="summernote"></textarea>
             <span asp-validation-for="Report" class="text-danger"></span>
         </div>
-                <div class="form-group mt-3">
-                    <label asp-for="Date"></label>
-                    <input type="date" class="form-control-sm" asp-for="Date"/>
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
+        <div class="form-group mt-3">
+            <label asp-for="Date"></label>
+            <input type="date" class="form-control-sm" asp-for="Date"/>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" asp-for="HasBeenPlayed"/>
+                <label class="custom-control-label" asp-for="HasBeenPlayed"></label>
+            </div>
+            <span asp-validation-for="HasBeenPlayed" class="text-danger"></span>
+        </div>
         <div class="form-group d-flex justify-content-end p-2">
             <button type="submit" class="btn btn-outline-success">Submit</button>
         </div>

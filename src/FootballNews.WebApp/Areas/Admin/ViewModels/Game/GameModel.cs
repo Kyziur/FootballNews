@@ -19,6 +19,7 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Game
         public IList<GoalModel> AwayTeamGoals { get; set; }
         public IList<SelectListItem> AwayTeamPlayers { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool HasBeenPlayed { get; set; }
     }
 
     public class GoalModel

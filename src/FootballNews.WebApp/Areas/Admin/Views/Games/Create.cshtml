@@ -41,11 +41,18 @@
             <textarea asp-for="Report" class="summernote"></textarea>
             <span asp-validation-for="Report" class="text-danger"></span>
         </div>
-                <div class="form-group mt-3">
-                    <label asp-for="Date"></label>
-                    <input type="datetime-local" class="form-control-sm" asp-for="Date"/>
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
+        <div class="form-group mt-3">
+            <label asp-for="Date"></label>
+            <input type="datetime-local" class="form-control-sm" asp-for="Date"/>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" asp-for="HasBeenPlayed"/>
+                <label class="custom-control-label" asp-for="HasBeenPlayed"></label>
+            </div>
+            <span asp-validation-for="HasBeenPlayed" class="text-danger"></span>
+        </div>
         <div class="form-group d-flex justify-content-end p-2">
             <button type="submit" class="btn btn-outline-success">Submit</button>
         </div>

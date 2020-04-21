@@ -26,9 +26,16 @@ namespace FootballNews.Core.Domain
         public DateTime Date { get; private set; }
         public string Report { get; private set; }
 
+        public bool HasBeenPlayed { get; private set; }
+        
         public void SetReport(string report)
         {
             Report = report;
+        }
+
+        private void SetGameAsPlayed()
+        {
+            HasBeenPlayed = true;
         }
 
         public void UpdateTeamsPoints()
@@ -48,6 +55,8 @@ namespace FootballNews.Core.Domain
             {
                 AwayTeam.AddPoints(WinPoints);
             }
+            
+            SetGameAsPlayed();
         }
         
         public IEnumerable<Goal> Goals { get; set; }
