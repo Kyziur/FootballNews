@@ -1865,7 +1865,6 @@
             // Append buttons for actions that are enabled
             if(this.options.enableReplying) actions.append(reply);
             if(this.options.enableUpvoting) actions.append(upvotes);
-            console.log('model comments', commentModel);
             if(commentModel.createdByCurrentUser || this.options.currentUserIsAdmin) {
 
                 // Case: delete button for attachment

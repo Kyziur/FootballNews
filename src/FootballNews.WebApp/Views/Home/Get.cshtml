@@ -83,7 +83,6 @@ $('#comments-container').comments({
             url: `/api/comments/${articleTitle}`,
             success: function (data) {
                 const comments = mapModelToComment(data);
-                console.log(comments);
                 success(comments);
             },
             error: error

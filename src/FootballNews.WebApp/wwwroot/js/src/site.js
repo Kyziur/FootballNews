@@ -50,9 +50,9 @@ function mapModelToComment(data){
             modified: comment.UpdatedDate,
             fullname: comment.FullName,
             parent: comment.ParentId === undefined || comment.ParentId === null ? null : comment.ParentId,
-            createdByCurrentUser: comment.CreatedByCurrentUser,
-            // createdByAdmin: comment.CreatedByAdmin,
-            currentUserIsAdmin: comment.CurrentUserIsAdmin
+            created_by_current_user: comment.CreatedByCurrentUser,
+            created_by_admin: comment.CreatedByAdmin,
+            // currentUserIsAdmin: comment.CurrentUserIsAdmin
         }));
         return model;
     }else{
@@ -62,9 +62,9 @@ function mapModelToComment(data){
             content: data.Text,
             modified: data.UpdatedDate,
             fullname: data.FullName,
-            createdByCurrentUser: data.CreatedByCurrentUser,
-            // createdByAdmin: data.CreatedByAdmin,
-            currentUserIsAdmin: data.CurrentUserIsAdmin,
+            created_by_current_user: data.CreatedByCurrentUser,
+            created_by_admin: data.CreatedByAdmin,
+            // currentUserIsAdmin: data.CurrentUserIsAdmin,
             parent: data.ParentId === undefined || data.ParentId === null ? null : data.ParentId,
         }
         
