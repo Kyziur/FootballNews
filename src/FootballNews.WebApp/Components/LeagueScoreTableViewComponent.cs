@@ -21,7 +21,7 @@ namespace FootballNews.WebApp.Components
             var model = new LeagueScoreTableModel
             {
                 League = leagueName,
-                TeamScores = teams.Select(x => new TeamScoreModel(x.Name, x.Points)).ToList()
+                TeamScores = teams.Select(x => new TeamScoreModel(x.Name, x.Points,x.GetGoals())).ToList()
             };
             
             return View("SideLeagueScoreTable",model);

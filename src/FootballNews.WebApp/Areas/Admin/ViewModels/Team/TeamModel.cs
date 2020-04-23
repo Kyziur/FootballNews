@@ -14,9 +14,11 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Team
         }
 
         public Guid Id { get; set; }
-        [Required] public string Name { get; set; }
-        [DisplayName("League")]
-        [Required] public string SelectedLeagueId { get; set; }
+        [Required(ErrorMessage = "Wprowadź nazwę drużyny")]
+        public string Name { get; set; }
+        [DisplayName("Liga")]
+        [Required(ErrorMessage = "Liga jest wymagana")] 
+        public string SelectedLeagueId { get; set; }
         public IList<SelectListItem> Leagues { get; set; }
     }
 }

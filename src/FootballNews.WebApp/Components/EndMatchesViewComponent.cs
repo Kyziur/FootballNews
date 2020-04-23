@@ -1,16 +1,17 @@
-﻿using System;
+﻿using FootballNews.Core.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FootballNews.Core.Repositories;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FootballNews.WebApp.Components
 {
-    public class UpcomingMatchesViewComponent : ViewComponent
+    public class EndMatchesViewComponent: ViewComponent
     {
         private readonly IGameRepository _gameRepository;
 
-        public UpcomingMatchesViewComponent(IGameRepository gameRepository)
+        public EndMatchesViewComponent(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
         }
@@ -24,11 +25,11 @@ namespace FootballNews.WebApp.Components
                     HomeTeam = x.HomeTeam.Name,
                     AwayTeam = x.AwayTeam.Name,
                     Date = x.Date,
-                    
-                }).ToList().Where(x=>x.Date>DateTime.UtcNow)
+
+                }).ToList().Where(x => x.Date < DateTime.UtcNow)
             };
 
-            return View("UpcomingMatches",model);
+            return View("EndMatches", model);
         }
     }
 }

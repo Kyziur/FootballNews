@@ -5,23 +5,26 @@
 @inject ILeagueRepository LeagueRepository
 <div class="d-flex align-items-center border-top border-bottom p-2 shadow flex-wrap">
     <div class="justify-content-center d-flex w-100 navigation-bar">
-        <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Main page</a>
-        @if (SignInManager.IsSignedIn(User) && (User.IsInRole(Role.Admin) || User.IsInRole(Role.Editor)))
+        <a class="menu-item" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
+        @if (SignInManager.IsSignedIn(User) && (User.IsInRole(Role.Admin) ))
         {
-            <a class="menu-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Articles</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tags</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Leagues" asp-action="Index">Leagues</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Teams" asp-action="Index">Teams</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Players" asp-action="Index">Players</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Games" asp-action="Index">Games</a>
-            <a class="menu-item" asp-area="Admin" asp-controller="Manage" asp-action="Index">Administration</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Artykuły</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tagi</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Leagues" asp-action="Index">Ligi</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Teams" asp-action="Index">Drużyny</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Players" asp-action="Index">Zawodnicy</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Games" asp-action="Index">Mecze</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Manage" asp-action="Index">Administracja Użytkownikami</a>
         }
-        else
+        else 
+           
         {
-            @foreach (var league in await LeagueRepository.GetAll())
-            {
-                <a class="menu-item" asp-controller="Home" asp-action="Index" asp-all-route-data="@Context.GetQueryParameters()" asp-area="" asp-route-league="@league.Name">@league.Name</a>
-            }
+            <a class="menu-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Artykuły</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tagi</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Leagues" asp-action="Index">Ligi</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Teams" asp-action="Index">Drużyny</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Players" asp-action="Index">Zawodnicy</a>
+            <a class="menu-item" asp-area="Admin" asp-controller="Games" asp-action="Index">Mecze</a>
         }
     </div>
     <div class="break"></div>

@@ -1,12 +1,12 @@
 ﻿@model FootballNews.WebApp.Areas.Admin.ViewModels.Game.GameModel
 @{
-    ViewData["Title"] = "Add game";
+    ViewData["Title"] = "Edycja";
     Layout = "_Layout";
 }
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
         <header class="">
-            <h2>Add</h2>
+            <h2>Edytuj</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Games" asp-action="Update" class="container border rounded box-shadow p-3" method="post">
@@ -22,7 +22,7 @@
                     <span asp-validation-for="SelectedHomeTeam" class="text-danger"></span>
                 </div>
                 <div class="form-inline my-1 d-flex flex-column" id="homeTeamGoalsWrapper">
-                    <h6>Goals</h6>
+                    <h6>Gole</h6>
                     @if (Model.HomeTeamGoals.Any())
                     {
                         @for (var i = 0; i < Model.HomeTeamGoals.Count(); i++)
@@ -73,19 +73,19 @@
             <span asp-validation-for="Report" class="text-danger"></span>
         </div>
         <div class="form-group mt-3">
-            <label asp-for="Date"></label>
+            <label asp-for="Date">Data</label>
             <input type="date" class="form-control-sm" asp-for="Date"/>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group mt-3">
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" asp-for="HasBeenPlayed"/>
-                <label class="custom-control-label" asp-for="HasBeenPlayed"></label>
+                <label class="custom-control-label" asp-for="HasBeenPlayed"> Czy rozegrany?</label>
             </div>
             <span asp-validation-for="HasBeenPlayed" class="text-danger"></span>
         </div>
         <div class="form-group d-flex justify-content-end p-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
 </div>

@@ -1,27 +1,27 @@
 ﻿@model FootballNews.WebApp.Areas.Admin.ViewModels.Article.ArticleModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edycja";
 }
 
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white" xmlns="http://www.w3.org/1999/html">
         <header class="">
-            <h2>Edit</h2>
+            <h2>Edycja</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Articles" asp-action="Update" class="container" method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label asp-for="Title">Title</label>
-            <input asp-for="Title" class="form-control" placeholder="Input title"/>
+            <label asp-for="Title">Tytuł</label>
+            <input asp-for="Title" class="form-control" placeholder="Wprowadź tytuł" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Content">Article content</label>
+            <label asp-for="Content">Treść artykułu</label>
             <textarea asp-for="Content" class="summernote"></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="SelectedTagsIds">Select tags</label>
+            <label asp-for="SelectedTagsIds">Dodaj tagi</label>
             <select asp-for="SelectedTagsIds" asp-items="@Model.Tags" class="selectpicker" multiple="multiple" data-actions-box="true" data-live-search="true">
             </select>
             <span asp-validation-for="SelectedTagsIds" class="text-danger"></span>
@@ -35,7 +35,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <div class="my-1">
-                    <span class="text-dark">Current picture</span>
+                    <span class="text-dark">Zdjęcie</span>
                     <div>
 
                         @if (Model.ImageAsBytes != null && Model.ImageAsBytes.Length > 0)
@@ -45,34 +45,36 @@
                         else
                         {
                             <svg class="bd-placeholder-img img-thumbnail" width="200" height="200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200">
-                                <title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="17%" y="50%" fill="#dee2e6" dy=".3em">Picture is not set.</text>
+                                <title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title>
+                                <rect width="100%" height="100%" fill="#868e96"></rect>
+                                <text x="17%" y="50%" fill="#dee2e6" dy=".3em">Brak zdjęcia</text>
                             </svg>
                         }
                     </div>
                 </div>
                 <div class="custom-file">
                     <input accept="image/png, image/jpeg" type="file" class="custom-file-input" asp-for="Image">
-                    <label class="custom-file-label" asp-for="Image">Choose picture</label>
+                    <label class="custom-file-label" asp-for="Image">Dodaj zdjęcie</label>
                 </div>
             </div>
         </div>
         <div class="form-row d-flex justify-content-end pb-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
 </div>
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial"/>
-    <partial name="_SelectPickerScriptPartial"/>
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_SelectPickerScriptPartial" />
 
     <script>
-        $(document).ready(function() {
-          $('.summernote').summernote();
+        $(document).ready(function () {
+            $('.summernote').summernote();
         });
-        
-        $('input[type="file"]').on('change',function(){
+
+        $('input[type="file"]').on('change', function () {
             const fileName = $(this).val();
             $(this).next('.custom-file-label').html(fileName);
         });

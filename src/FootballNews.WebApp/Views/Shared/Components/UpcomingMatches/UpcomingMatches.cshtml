@@ -3,23 +3,24 @@
 <div class="mt-4 p-1">
     <div class="list-group">
         <div class="list-group-item bg-deep-green d-flex justify-content-center align-items-center">
-            <span class="font-weight-bold text-light">Upcoming matches</span>
+            <span class="font-weight-bold text-light">Nadchodzące spotkania</span>
         </div>
         <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">Home Team</th>
-                        <th scope="col">Away Team</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">Gospodarze</th>
+                        <th scope="col">Goście</th>
+                        <th scope="col">Data</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach (var match in Model.Matches)
                     {
                         <tr>
-                            <th scope="row" class="text-center">@match.HomeTeam</th>
+                            <td class="text-center">@match.HomeTeam</td>
                             <td class="text-center">@match.AwayTeam</td>
-                            <td class="text-center">@match.Date</td>
+                            <td class="text-center">@match.Date.ToString("dd'/'MM'/'yyyy HH:mm")</td>
+                            
                         </tr>
                     }
 

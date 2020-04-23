@@ -6,7 +6,7 @@
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
         <header class="">
-            <h2>Add</h2>
+            <h2>Dodaj Spotkanie</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Games" asp-action="Create" class="container border rounded box-shadow p-3" method="post">
@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <label asp-for="SelectedHomeTeam"></label>
                     <select asp-for="SelectedHomeTeam" id="homeTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" data-live-search="true">
-                        <option selected="selected" disabled="disabled" value="-1">Select team...</option>
+                        <option selected="selected" disabled="disabled" value="-1">Wybierz drużynę...</option>
                     </select>
                     <span asp-validation-for="SelectedHomeTeam" class="text-danger"></span>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label asp-for="SelectedAwayTeam"></label>
                     <select asp-for="SelectedAwayTeam" id="awayTeamSelect" asp-items="@Model.Teams" class="selectpicker form-control" data-live-search="true">
-                        <option selected="selected" disabled="disabled" value="-1">Select team...</option>
+                        <option selected="selected" disabled="disabled" value="-1">Wybierz drużynę...</option>
                     </select>
                     <span asp-validation-for="SelectedAwayTeam" class="text-danger"></span>
                 </div>
@@ -42,19 +42,19 @@
             <span asp-validation-for="Report" class="text-danger"></span>
         </div>
         <div class="form-group mt-3">
-            <label asp-for="Date"></label>
+            <label asp-for="Date">Data spotkania</label>
             <input type="datetime-local" class="form-control-sm" asp-for="Date"/>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
         <div class="form-group mt-3">
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" asp-for="HasBeenPlayed"/>
-                <label class="custom-control-label" asp-for="HasBeenPlayed"></label>
+                <label class="custom-control-label" asp-for="HasBeenPlayed"> Czy mecz się zakończył?</label>
             </div>
             <span asp-validation-for="HasBeenPlayed" class="text-danger"></span>
         </div>
         <div class="form-group d-flex justify-content-end p-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
 </div>

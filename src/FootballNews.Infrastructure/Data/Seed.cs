@@ -33,7 +33,7 @@ namespace FootballNews.Infrastructure.Data
                 return;
 
             await roleManager.CreateAsync(new IdentityRole<Guid>(Role.Admin));
-            await roleManager.CreateAsync(new IdentityRole<Guid>(Role.Editor));
+            await roleManager.CreateAsync(new IdentityRole<Guid>(Role.Redaktor));
             await roleManager.CreateAsync(new IdentityRole<Guid>(Role.User));
         }
 

@@ -11,15 +11,17 @@ namespace FootballNews.Core.Domain
         {
         }
 
-        public Player(Guid id, string firstName, string lastName, DateTime birthdate, Team team)
+        public Player(Guid id, string firstName, string lastName,string position, DateTime birthdate, Team team)
         {
             GuardExtensions.ThrowIfEmpty(firstName, nameof(firstName));
             GuardExtensions.ThrowIfEmpty(lastName, nameof(lastName));
+            GuardExtensions.ThrowIfEmpty(position, nameof(position));
             GuardExtensions.ThrowIfNull(id, nameof(id));
             GuardExtensions.ThrowIfNull(team, nameof(team));
             Id = id;
             FirstName = firstName;
             LastName = lastName;
+            Position = position;
             Birthdate = birthdate;
             Team = team;
         }
@@ -34,7 +36,7 @@ namespace FootballNews.Core.Domain
 
         public void SetBirthdate(DateTime birthdate)
         {
-            //There could be some validation for proper year like is there any football player older than 50y? 
+            
             Birthdate = birthdate;
         }
 

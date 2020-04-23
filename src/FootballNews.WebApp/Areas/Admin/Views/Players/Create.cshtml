@@ -1,34 +1,34 @@
 ﻿@model PlayerModel
 @{
-    ViewData["Title"] = "Create player";
+    ViewData["Title"] = "Dodaj zawodnika";
     Layout = "_Layout";
 }
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white" xmlns="http://www.w3.org/1999/html">
         <header class="">
-            <h2>Create</h2>
+            <h2>Dodaj Zawodnika</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Players" asp-action="Create" class="container" method="post">
         <div class="d-flex">
             <div class="form-group">
-                <label asp-for="FirstName" class="">First name</label>
-                <input asp-for="FirstName" class="form-control" placeholder="First name"/>
+                <label asp-for="FirstName" class="">Imię</label>
+                <input asp-for="FirstName" class="form-control" placeholder="Imię"/>
                 <small>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </small>
 
             </div>
             <div class="form-group mx-5">
-                <label asp-for="LastName" class="">Last name</label>
-                <input asp-for="LastName" class="form-control" placeholder="Last name"/>
+                <label asp-for="LastName" class="">Nazwisko</label>
+                <input asp-for="LastName" class="form-control" placeholder="Nazwisko"/>
                 <small>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </small>
             </div>
             <div class="form-group">
-                <label asp-for="Birthdate" class="">Birthdate</label>
-                <input asp-for="Birthdate" class="form-control" placeholder="Height"/>
+                <label asp-for="Birthdate" class="">Data urodzenia</label>
+                <input asp-for="Birthdate" class="form-control" placeholder="Wzrost"/>
                 <small>
                     <span asp-validation-for="Birthdate" class="text-danger"></span>
                 </small>
@@ -36,22 +36,22 @@
         </div>
         <div class="d-flex">
             <div class="form-group">
-                <label asp-for="Height" class="">Height</label>
-                <input asp-for="Height" min="100" max="250" class="form-control" placeholder="Height"/>
+                <label asp-for="Height" class="">Wzrost</label>
+                <input asp-for="Height" min="100" max="250" class="form-control" placeholder="Wzrost"/>
                 <small>
                     <span asp-validation-for="Height" class="text-danger"></span>
                 </small>
             </div>
             <div class="form-group">
-                <label asp-for="Position" class="">Position</label>
-                <input asp-for="Position" class="form-control" placeholder="Position"/>
+                <label asp-for="Position" class="">Pozycja</label>
+                <input asp-for="Position" class="form-control" placeholder="Pozycja"/>
                 <small>
                     <span asp-validation-for="Position" class="text-danger"></span>
                 </small>
             </div>
             <div class="form-group mx-5">
-                <label asp-for="NumberOnShirt" class="">Number on t-shirt</label>
-                <input asp-for="NumberOnShirt" min="0" max="100" class="form-control" placeholder="NumberOnShirt"/>
+                <label asp-for="NumberOnShirt" class="">Numer na koszulce</label>
+                <input asp-for="NumberOnShirt" min="0" max="100" class="form-control" placeholder="Numer na koszulce"/>
                 <small>
                     <span asp-validation-for="NumberOnShirt" class="text-danger"></span>
                 </small>
@@ -60,13 +60,13 @@
         <div class="d-flex">
             <div class="form-group">
                 <label asp-for="SelectedTeamId" class="sr-only"></label>
-                <select asp-for="SelectedTeamId" asp-items="@Model.Teams" title="Select team" class="selectpicker" data-live-search="true">
+                <select asp-for="SelectedTeamId" asp-items="@Model.Teams" title="Wybierz drużynę" class="selectpicker" data-live-search="true">
                 </select>
                 <span asp-validation-for="SelectedTeamId" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group d-flex justify-content-end p-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
 </div>

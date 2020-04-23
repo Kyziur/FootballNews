@@ -10,5 +10,6 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Game
         public int HomeTeamScore { get; set; }
         public int AwayTeamScore { get; set; }
         public string Date { get; set; }
+      
     }
 }

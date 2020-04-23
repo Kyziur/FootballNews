@@ -7,31 +7,32 @@
     ViewBag.Title = Model.Title;
 }
 <div class="container d-flex justify-content-center flex-column border-bottom">
-    <div class="mb-1">
+    <div class="mb-1" style="text-align:center">
         @if (Model.ImageAsBytes != null && Model.ImageAsBytes.Length > 0)
         {
-            <img class="img-max-size" src="data:image/jpg;base64, @Convert.ToBase64String(Model.ImageAsBytes)" alt="@Model.ImageName">
+            <img class="img-max-size"  src="data:image/jpg;base64, @Convert.ToBase64String(Model.ImageAsBytes)" alt="@Model.ImageName">
         }
     </div>
     <div class="blog-main">
         <div class="pb-4 mb-4 border-bottom ">
+            <span class="blog-post-meta">
+                @Model.CreatedDate.ToString("dd'/'MM'/'yyyy HH:mm")
+                przez <b>@Model.Author</b>
+            </span>
             <h2 class="font-italic blog-post-title" id="articleTitle">
                 @Model.Title
             </h2>
-            <span class="blog-post-meta">
-                @Model.CreatedDate.ToShortDateString()
-                by <a href="#">@Model.Author</a>
-            </span>
+
         </div>
         <div class="blog-post text-break">
             @Html.Raw(Model.Content)
-        </div><!-- /.blog-post -->
+        </div>
     </div>
     <div class="my-3">
-        <a class="btn btn-outline-success" asp-action="Index" asp-controller="Home">Back to articles</a>
+        <a class="btn btn-outline-success" asp-action="Index" asp-controller="Home">Powrót do strony głównej</a>
     </div>
     <div class="mt-2">
-        <h5>Comments</h5>
+        <h5>Komentarze</h5>
     </div>
 </div>
 @if (SignInManager.IsSignedIn(User))
@@ -42,9 +43,11 @@
 }
 else
 {
-    <div>
-        You must be logged in to comment article.
-    </div>
+<div>
+    Zaloguj się aby uzyskać dostęp do sekcji komentarzy.
+    <br />
+    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
+</div>
 }
 
 @section Scripts {
@@ -52,6 +55,7 @@ else
     <script>
     function mapModelToComment(data){
         let model;
+       
         if(Array.isArray(data)){
                 model = data.map(comment => ({
                             id: comment.Id,
@@ -77,97 +81,101 @@ else
                 parent: data.ParentId === undefined || data.ParentId === null ? null : data.ParentId,
             }
         }
-           
+
         return model;
-    }
-    $('#comments-container').comments({
-    currentUserIsAdmin: '@User.IsInRole(Role.Admin)',
-    currentUserId: '@UserManager.GetUserId(User)',
-    enableReplying: true,
-    enableEditing: true,
-    enableUpvoting: false,
-    enableDeleting: true,
-    textareaPlaceholderText: "Dodaj komentarz",
-    newestText: "Najnowsze",
-    oldestText: "Najstarsze",
-    popularText: "Popularne",
-    sendText: "Wyślij",
-    replyText: "Odpowiedz",
-    noCommentsText: "Nie ma jeszcze żadnego komentarza",
-    editTextL: "Edytuj",
-    editedText: "Edytowano",
-    saveText: "Zapisz",
-    deleteText: "Usuń",
-    
-    refresh: function() {
+        }
+       
+        $('#comments-container').comments({
+
+
+            currentUserIsAdmin:'@User.IsInRole(Role.Admin)',
+            currentUserId: '@UserManager.GetUserId(User)',
+            enableReplying: true,
+            enableEditing: true,
+            enableUpvoting: false,
+            enableDeleting: true,
+            textareaPlaceholderText: "Dodaj komentarz",
+            newestText: "Najnowsze",
+            oldestText: "Najstarsze",
+            popularText: "Popularne",
+            sendText: "Wyślij",
+            replyText: "Odpowiedz",
+            noCommentsText: "Nie ma jeszcze żadnego komentarza",
+            editText: "Edytuj",
+            editedText: "Edytowano",
+            saveText: "Zapisz",
+            deleteText: "Usuń",
+        
+            refresh: function () {
             $('#comments-container').addClass('rendered');
-    },
+
+                            },
     getComments: function(success, error) {
-        const articleTitle = document.getElementById('articleTitle').innerText;       
+                                const articleTitle = document.getElementById('articleTitle').innerText;
         $.ajax({
-            type: 'get',
+                                type: 'get',
             url: `/api/comments/${articleTitle}`,
             success: function(data) {
-                const comments = mapModelToComment(data);
-                console.log(comments);
-                success(comments);
-            },
+                                        const comments = mapModelToComment(data);
+                                        console.log(comments);
+                                        success(comments);
+                                    },
             error: error
         });
-    },
+                    },
     postComment: function(commentJSON, success, error) {
-        const articleTitle = document.getElementById('articleTitle').innerText;
-        const comment = {
+                        const articleTitle = document.getElementById('articleTitle').innerText;
+                        const comment = {
             articleTitle: articleTitle,
             text: commentJSON.content,
             parentId: commentJSON.parent
         };
         $.ajax({
-        type: 'post',
+                    type: 'post',
         url: '/api/comments/',
         contentType: "application/json",
         data: JSON.stringify(comment),
         success: function(result) {
-            const comments = mapModelToComment(result);
-            success(comments)
+                            const comments = mapModelToComment(result);
+                            success(comments)
             },
             error: function(error){
-            console.log(error);
-        }
-        });
+                            console.log(error);
+                        }
+                    });
     },
     putComment: function(commentJSON, success, error) {
-        console.log(commentJSON);
-        const articleTitle = document.getElementById('articleTitle').innerText;
-        const comment = {
+                    console.log(commentJSON);
+                    const articleTitle = document.getElementById('articleTitle').innerText;
+                    const comment = {
             articleTitle: articleTitle,
             id: commentJSON.id,
             text: commentJSON.content,
             parentId: commentJSON.parent
         };
         $.ajax({
-            type: 'put',
+                type: 'put',
             url: '/api/comments/',
             contentType: "application/json",
             data: JSON.stringify(comment),
             success: function(comment) {
-                console.log(comment);
-                const result = mapModelToComment(comment);
-                console.log(result);
-                success(result)
+                        console.log(comment);
+                        const result = mapModelToComment(comment);
+                        console.log(result);
+                        success(result)
             },
             error: error
         });
         },
     deleteComment: function(commentJSON, success, error) {
                     $.ajax({
-                    url: '/api/comments/' + commentJSON.id,
+                url: '/api/comments/' + commentJSON.id,
                     type: 'DELETE',
                     success: success,
                     error: error
                 });
-        }
-        
+            }
+
     });
 
     </script>

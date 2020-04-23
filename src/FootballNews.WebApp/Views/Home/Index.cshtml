@@ -1,7 +1,7 @@
 ﻿
 @model IPagedList<Article>
 @{
-    ViewData["Title"] = "Articles";
+    ViewData["Title"] = "Artykuły";
 }
 
 <div class="container-fluid">
@@ -9,7 +9,7 @@
         <section class="flex-column col-lg-9 justify-content-center">
             @if (Model.Count == 0)
             {
-                <div>There is no articles on this topic</div>
+                <div>Brak artykułów</div>
             }
             @foreach (var article in Model)
             {
@@ -28,7 +28,7 @@
                                         <h5>@article.Title</h5>
                                     </span>
                                     <span class="card-text ml-2">
-                                        <small class="text-muted">@article.CreatedAt.ToString("dd'/'MM'/'yyyy HH:mm") by
+                                        <small class="text-muted">@article.CreatedAt.ToString("dd'/'MM'/'yyyy HH:mm") przez
                                             <span class="font-weight-bold">
                                                 @article.Author
                                             </span></small>
@@ -36,7 +36,7 @@
                                 </div>
                                 <p class="card-text">@Html.Raw(article.Content)</p>
                                 <div>
-                                    <a asp-controller="Home" asp-action="Get" asp-route-title="@article.Title" class="btn btn-outline-primary">Continue reading</a>
+                                    <a asp-controller="Home" asp-action="Get" asp-route-title="@article.Title" class="btn btn-outline-primary">Przejdź do artykułu</a>
                                 </div>
                             </div>
                             <div class="d-flex flex-row my-3 tag-list">
@@ -57,7 +57,8 @@
                 @await Component.InvokeAsync("LeagueScoreTable", new {leagueName = ViewBag.League})
             }
 
-            @await Component.InvokeAsync("UpcomingMatches");
+            @await Component.InvokeAsync("UpcomingMatches")
+            @await Component.InvokeAsync("EndMatches")
         </aside>
     </div>
     <div class="d-flex ml-3 mt-2">
@@ -67,8 +68,8 @@
                 
                 LiElementClasses = new string[] {"page-item"},
                 PageClasses = new string[] {"page-link"},
-                LinkToPreviousPageFormat = "Newer",
-                LinkToNextPageFormat = "Older",
+                LinkToPreviousPageFormat = "Nowsze",
+                LinkToNextPageFormat = "Starsze",
                 DisplayLinkToFirstPage = PagedListDisplayMode.Never,
                 DisplayLinkToLastPage = PagedListDisplayMode.Never,
                 DisplayLinkToPreviousPage = PagedListDisplayMode.Always,

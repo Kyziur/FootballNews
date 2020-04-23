@@ -1,28 +1,28 @@
 ﻿@model FootballNews.WebApp.Areas.Admin.ViewModels.Team.TeamModel
 @{
-    ViewData["Title"] = "Create team";
+    ViewData["Title"] = "Dodaj drużynę";
     Layout = "_Layout";
 }
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
         <header class="">
-            <h2>Create</h2>
+            <h2>Dodaj drużynę</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Teams" asp-action="Create" class="container" method="post">
         <div class="form-group">
-            <label asp-for="Name">Name</label>
-            <input asp-for="Name" class="form-control" placeholder="Input name of team"/>
+            <label asp-for="Name">Nazwa</label>
+            <input asp-for="Name" class="form-control" placeholder="Wprowadź nazwę drużyny"/>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="SelectedLeagueId"></label>
+            <label asp-for="SelectedLeagueId">Wybierz ligę</label>
             <select asp-for="SelectedLeagueId" asp-items="@Model.Leagues" class="selectpicker" data-live-search="true">
             </select>
             <span asp-validation-for="SelectedLeagueId" class="text-danger"></span>
         </div>
         <div class="form-group d-flex justify-content-end p-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
     

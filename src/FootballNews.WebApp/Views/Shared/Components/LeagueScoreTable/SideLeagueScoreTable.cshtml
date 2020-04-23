@@ -8,9 +8,10 @@
         <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">Position</th>
-                        <th scope="col">Team</th>
-                        <th scope="col">Points</th>
+                        <th scope="col">Pozycja</th>
+                        <th scope="col">Drużyna</th>
+                        <th scope="col">Punkty</th>
+                        <th scope="col">Gole</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -20,6 +21,7 @@
                             <th scope="row" class="text-center">@(i+1)</th>
                             <td class="text-center"><strong>@Model.TeamScores[i].Name</strong></td>
                             <td class="text-center">@Model.TeamScores[i].Points</td>
+                            <td class="text-center">@Model.TeamScores[i].Goals</td>
                         </tr>
                     }
         

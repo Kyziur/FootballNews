@@ -13,5 +13,6 @@ namespace FootballNews.WebApp.Components
         public string HomeTeam { get; set; }
         public string AwayTeam { get; set; }
         public DateTime Date { get; set; }
+        
     }
 }

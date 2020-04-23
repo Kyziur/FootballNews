@@ -1,65 +1,65 @@
 ﻿@model FootballNews.WebApp.Areas.Admin.ViewModels.Article.ArticleModel
 @{
-    ViewData["Title"] = "Create article";
+    ViewData["Title"] = "Dodaj Artykuł";
     Layout = "_Layout";
 }
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white" xmlns="http://www.w3.org/1999/html">
         <header class="">
-            <h2>Create</h2>
+            <h2>Utwórz</h2>
         </header>
     </div>
     <form asp-area="Admin" asp-controller="Articles" asp-action="Create" class="container" enctype="multipart/form-data">
         <div class="form-group">
-            <label asp-for="Title">Title</label>
-            <input asp-for="Title" class="form-control" placeholder="Input title"/>
+            <label asp-for="Title">Tytuł</label>
+            <input asp-for="Title" class="form-control" placeholder="Wprowadź tytuł" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Content">Article content</label>
+            <label asp-for="Content">Treść artykułu</label>
             <textarea asp-for="Content" class="summernote"></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div class="form-row d-flex justify-content-between">
             <div class="form-group">
                 <div class="custom-file">
-                    <label asp-for="Image">Choose picture</label>
-                    <input accept="image/png, image/jpeg" type="file" class="custom-file-input" asp-for="Image">
-                    <label class="custom-file-label" asp-for="Image">Choose picture</label>
+                    <label asp-for="Image">Wybierz zdjęcie</label>
+                    <input accept="image/png, image/jpeg" type="file" class="custom-file-input" asp-for="Image" >
+                    <label class="custom-file-label" asp-for="Image">Wybierz zdjęcie</label>
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="SelectedTagsIds">Select tags</label>
-                <select asp-for="SelectedTagsIds" asp-items="@Model.Tags" class="selectpicker" multiple="multiple" data-actions-box="true" data-live-search="true">
+                <label asp-for="SelectedTagsIds">Dodaj tagi</label>
+                <select asp-for="SelectedTagsIds" asp-items="@Model.Tags" title="Wybierz tagi" class="selectpicker" multiple="multiple" data-actions-box="true" data-live-search="true">
                 </select>
                 <span asp-validation-for="SelectedTagsIds" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="SelectedLeagueId"></label>
-            <select asp-for="SelectedLeagueId" asp-items="@Model.Leagues" class="selectpicker" data-live-search="true">
+            <select asp-for="SelectedLeagueId" asp-items="@Model.Leagues" title="Wybierz ligę" class="selectpicker" data-live-search="true">
             </select>
             <span asp-validation-for="SelectedLeagueId" class="text-danger"></span>
         </div>
         <div class="form-group d-flex justify-content-end p-2">
-            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <button type="submit" class="btn btn-outline-success">Dodaj</button>
         </div>
     </form>
 </div>
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial"/>
-    <partial name="_SelectPickerScriptPartial"/>
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_SelectPickerScriptPartial" />
 
     <script>
-        $(document).ready(function() {
-          $('.summernote').summernote();
+        $(document).ready(function () {
+            $('.summernote').summernote();
         });
-        
-        
 
-        $('input[type="file"]').on('change',function(){
+
+
+        $('input[type="file"]').on('change', function () {
             const fileName = $(this).val();
             $(this).next('.custom-file-label').html(fileName);
         });

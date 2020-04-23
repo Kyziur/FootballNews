@@ -19,9 +19,11 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Article
         public Guid Id { get; set; }
         [Required(ErrorMessage = "Tytuł jest wymagany")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Treść jest wymagana")]
         public string Content { get; set; }
+        
         public byte[] ImageAsBytes { get; set; }
+        
         public IFormFile Image { get; set; }
         public IList<SelectListItem> Tags { get; set; }
         [MinimumElements(1, ErrorMessage = "Wymagany jest przynajmniej 1 tag.")]

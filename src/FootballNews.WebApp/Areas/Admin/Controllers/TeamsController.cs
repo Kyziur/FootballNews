@@ -28,7 +28,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             var model = onePageTeams.Select(x => new TeamModel
             {
                 Id = x.Id,
-                Name = x.Name
+                Name = x.Name,
+               
             });
 
             return View(model);

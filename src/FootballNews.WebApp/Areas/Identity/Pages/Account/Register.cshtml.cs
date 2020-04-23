@@ -47,23 +47,23 @@ namespace FootballNews.WebApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Login jest wymagany")]
             public string Login { get; set; }
             
-            [Required]
+            [Required(ErrorMessage ="Adres Email jest wymagany")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Hasło jest wymagane")]
+            [StringLength(100, ErrorMessage = "Hasło {0} musi posiadać {2} znaków, wielką literę oraz 1 znak specjalny .", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Hasło i potwierdzenie hasła nie zgadzają się.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -115,7 +115,7 @@ namespace FootballNews.WebApp.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            
             return Page();
         }
     }

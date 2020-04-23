@@ -31,7 +31,9 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             {
                 Id = x.Id,
                 FullName = $"{x.FirstName} {x.LastName}",
+                BirthDate=x.Birthdate,
                 Position = x.Position,
+                Height=x.Height,
                 Team = x.Team.Name
             });
 
@@ -61,7 +63,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             }
 
             var team = await _teamRepository.GetById(Guid.Parse(model.SelectedTeamId));
-            var player = new Player(Guid.NewGuid(), model.FirstName, model.LastName, model.Birthdate, team);
+            var player = new Player(Guid.NewGuid(), model.FirstName, model.LastName,model.Position, model.Birthdate, team);
             player.SetHeight(model.Height);
             player.SetNumberOnTShirt(model.NumberOnShirt);
 
@@ -128,7 +130,7 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not delete player with id: {id}");
+                Console.WriteLine($"Nie można usunąć zawodnika o podanym id: {id}");
                 return BadRequest();
             }
 

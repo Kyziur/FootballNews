@@ -42,13 +42,15 @@ namespace FootballNews.WebApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required] [Display(Name = "Login")] public string Email { get; set; }
+            [Required(ErrorMessage = "Login jest wymagany")] 
+            [Display(Name = "Login")] 
+            public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")] public bool RememberMe { get; set; }
+            [Display(Name = "Zapamiętaj mnie?")] public bool RememberMe { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)

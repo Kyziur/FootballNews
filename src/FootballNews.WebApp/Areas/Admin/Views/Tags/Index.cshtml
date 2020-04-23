@@ -1,56 +1,66 @@
 ﻿@model IPagedList<TagModel>
 @{
-    ViewData["Title"] = "Tags";
+    ViewData["Title"] = "Tagi";
 }
 
 <div class="d-flex justify-content-between align-items-center my-3 card-header bg-deep-green text-white">
     <header class="">
-        <h2>Tags</h2>
+        <h2>Tagi</h2>
     </header>
     <div>
-        <a class="btn btn-md btn-outline-light" asp-area="Admin" asp-controller="Tags" asp-action="Create">
-            <div class="d-inline-block mr-1">
-                <i class="fas fa-plus"></i>
-            </div>Create
-        </a>
-    </div>
+        @if (User.IsInRole(Role.Admin) || User.IsInRole(Role.Redaktor))
+        {
+            <a class="btn btn-md btn-outline-light" asp-area="Admin" asp-controller="Tags" asp-action="Create">
+                <div class="d-inline-block mr-1">
+                    <i class="fas fa-plus"></i>
+                </div>Dodaj
+            </a>
+        }
+        </div>
 </div>
 <div class="mb-3">
     <form class="form-inline" method="get" asp-area="Admin" asp-controller="Tags" asp-action="Index" asp-route-page="@Model.PageNumber">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search by name" aria-label="Search" name="search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input class="form-control mr-sm-2" type="search" placeholder="Wpisz nazwę tagu" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Szukaj</button>
     </form>
 </div>
 <div class="table-responsive">
     <table class="table">
         <thead class="thead-dark">
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="colgroup">Actions</th>
-        </tr>
+            <tr>
+                <th scope="col">Nazwa</th>
+                @if (User.IsInRole(Role.Admin) || User.IsInRole(Role.Redaktor))
+                {
+                    <th scope="colgroup">Akcje</th>
+                }
+                </tr>
         </thead>
         <tbody>
-        @foreach (var tag in Model)
-        {
+            @foreach (var tag in Model)
+            {
             <tr>
                 <th scope="row">@tag.Name</th>
-                <td>
-                    <div class="btn-group text-white" role="group" aria-label="Actions">
-                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Tags" asp-action="Update" asp-route-id="@tag.Id"><i class="fas fa-edit"></i>Edit</a>
-                        <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Tags" asp-action="Delete" asp-route-id="@tag.Id" data-confirm="Are you sure you want to delete this item?"><i class="far fa-trash-alt"></i>Delete</a>
-                    </div>
-                </td>
-            </tr>
-        }
+                @if (User.IsInRole(Role.Admin) || User.IsInRole(Role.Redaktor))
+                {
+                    <td>
+                        <div class="btn-group text-white" role="group" aria-label="Actions">
+                            <a class="btn btn-primary" asp-area="Admin" asp-controller="Tags" asp-action="Update" asp-route-id="@tag.Id"><i class="fas fa-edit"></i>Edycja</a>
+                            <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Tags" asp-action="Delete" asp-route-id="@tag.Id" data-confirm="Chcesz usunąć ten element?"><i class="far fa-trash-alt"></i>Usuń</a>
+                        </div>
+                    </td>
+                    }
+                
+                </tr>
+            }
         </tbody>
     </table>
 </div>
 <div>
-    @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
         new PagedListRenderOptions
         {
-            LiElementClasses = new string[] {"page-item"},
-            PageClasses = new string[] {"page-link"},
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
             DisplayLinkToFirstPage = PagedListDisplayMode.Never,
             DisplayLinkToLastPage = PagedListDisplayMode.Never,
             DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
@@ -61,6 +71,6 @@
 @section Scripts
 {
     <script>
-    areYouSure();
+        areYouSure();
     </script>
 }
