@@ -45,10 +45,10 @@ namespace FootballNews.WebApp.Controllers
                 CreatedDate = x.CreatedAt,
                 FullName = x.Author.UserName,
                 CreatedByCurrentUser = x.Author.UserName == User.Identity.Name,
-                CreatedByAdmin = _userManager.IsInRoleAsync(x.Author, Role.Admin).Result,
+                // CreatedByAdmin = _userManager.IsInRoleAsync(x.Author, Role.Admin).Result,
                 CurrentUserIsAdmin = User.IsInRole(Role.Admin),
-                UpdatedDate = x.UpdatedAt
-            });
+                UpdatedDate = x.UpdatedAt,
+            }).ToList();
             return Ok(model);
         }
 

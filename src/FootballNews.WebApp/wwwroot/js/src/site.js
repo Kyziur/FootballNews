@@ -36,5 +36,40 @@ async function getPlayers(team) {
     } catch (error) {
         console.log(error);
     }
+    
+}
 
+function mapModelToComment(data){
+    let model;
+    console.log('received data:', data);
+    if(Array.isArray(data)){
+        model = data.map(comment => ({
+            id: comment.Id,
+            created: comment.CreatedDate,
+            content: comment.Text,
+            modified: comment.UpdatedDate,
+            fullname: comment.FullName,
+            parent: comment.ParentId === undefined || comment.ParentId === null ? null : comment.ParentId,
+            createdByCurrentUser: comment.CreatedByCurrentUser,
+            // createdByAdmin: comment.CreatedByAdmin,
+            currentUserIsAdmin: comment.CurrentUserIsAdmin
+        }));
+        return model;
+    }else{
+        model = {
+            id: data.Id,
+            created: data.CreatedDate,
+            content: data.Text,
+            modified: data.UpdatedDate,
+            fullname: data.FullName,
+            createdByCurrentUser: data.CreatedByCurrentUser,
+            // createdByAdmin: data.CreatedByAdmin,
+            currentUserIsAdmin: data.CurrentUserIsAdmin,
+            parent: data.ParentId === undefined || data.ParentId === null ? null : data.ParentId,
+        }
+        
+        return model;
+    }
+    
+    return model;
 }
