@@ -62,7 +62,12 @@ namespace FootballNews.Infrastructure.Repositories
 
         public async Task<IEnumerable<Team>> GetByLeagueName(string league)
         {
-            return await _context.Teams.Include(x => x.League).Where(x => x.League.Name == league).OrderByDescending(x => x.Points).ToListAsync();
+            return await _context.Teams
+                .Include(x => x.League)
+                .Include(x => x.HomeMatches).ThenInclude(x => x.Goals).ThenInclude(x => x.Team)
+                .Include(x => x.AwayMatches).ThenInclude(x => x.Goals).ThenInclude(x => x.Team)
+                .Where(x => x.League.Name == league)
+                .OrderByDescending(x => x.Points).ToListAsync();
         }
     }
 }
