@@ -77,5 +77,14 @@ namespace FootballNews.Infrastructure.Repositories
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> IsThereArticleOrCommentMadeByAuthor(string username)
+        {
+             var isAnyArticle = await _context.Articles.Include(x => x.Author).AnyAsync(x => x.Author.UserName == username);
+             var isAnyComment =
+                 await _context.Comments.Include(x => x.Author).AnyAsync(x => x.Author.UserName == username);
+
+             return isAnyArticle || isAnyComment;
+        }
     }
 }

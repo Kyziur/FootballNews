@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
 using FootballNews.Core.Repositories;
+using FootballNews.Infrastructure.Repositories;
 using FootballNews.WebApp.Extensions;
 using FootballNews.WebApp.ViewModels.Article;
 using Microsoft.AspNetCore.Identity;

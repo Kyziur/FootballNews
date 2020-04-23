@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FootballNews.Core.Domain;
+using FootballNews.Core.Repositories;
 using FootballNews.WebApp.Areas.Admin.ViewModels.Manage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IArticleRepository _articleRepository;
 
-        public ManageController(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager )
+        public ManageController(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IArticleRepository articleRepository )
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _articleRepository = articleRepository;
         }
 
         [HttpGet]
@@ -34,7 +37,8 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
                     Id = user.Id,
                     Email = user.Email,
                     Roles = await _userManager.GetRolesAsync(user),
-                    Username = user.UserName
+                    Username = user.UserName,
+                    HasAnyArticle = await _articleRepository.IsThereArticleOrCommentMadeByAuthor(user.UserName)
                 });
             }
 
@@ -86,9 +90,17 @@ namespace FootballNews.WebApp.Areas.Admin.Controllers
             {
                 return BadRequest($"User with id {id} does not exists.");
             }
-
-            await _userManager.DeleteAsync(user);
-
+            
+            try
+            {
+                await _userManager.DeleteAsync(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Error {e.Message}");
+            }
+            
+            
             return Ok();
         }
     }

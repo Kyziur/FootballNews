@@ -9,5 +9,6 @@ namespace FootballNews.WebApp.Areas.Admin.ViewModels.Manage
         public string Username { get; set; }
         public string Email { get; set; }
         public IList<string> Roles { get; set; }
+        public bool HasAnyArticle { get; set; }
     }
 }

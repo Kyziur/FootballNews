@@ -8,7 +8,7 @@ namespace FootballNews.Infrastructure.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-
+            
         }
     }
 }

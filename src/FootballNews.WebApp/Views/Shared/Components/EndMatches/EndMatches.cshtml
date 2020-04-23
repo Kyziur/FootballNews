@@ -7,22 +7,39 @@
         </div>
         <table class="table table-sm">
             <thead>
-                <tr>
-                    <th scope="col">Gospodarze</th>
-                    <th scope="col">Goście</th>
-                    <th scope="col">Data</th>
-                </tr>
+            <tr>
+                <th scope="col">Gospodarze</th>
+                <th scope="col">Goście</th>
+                <th scope="col">Data</th>
+                <th scope="col">Wynik</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var match in Model.Matches)
-                {
-                    <tr>
-                        <td class="text-center">@match.HomeTeam</td>
-                        <td class="text-center">@match.AwayTeam</td>
-                        <td class="text-center">@match.Date.ToString("dd'/'MM'/'yyyy HH:mm")</td>
+            @foreach (var match in Model.Matches)
+            {
+                <tr>
+                    <td class="text-center">@match.HomeTeam</td>
+                    <td class="text-center">@match.AwayTeam</td>
+                    <td class="text-center">@match.Date.ToString("dd'/'MM'/'yyyy HH:mm")</td>
+                    <td class="font-weight-bold text-center">
+                        @if (match.HomeTeamScore == match.AwayTeamScore)
+                        {
+                            <text><span class="text-muted">@match.HomeTeamScore</span> | <span class="text-muted">@match.AwayTeamScore</span></text>
+                        }
+                        @if (match.HomeTeamScore > match.AwayTeamScore)
+                        {
+                            <text><span class="text-success">@match.HomeTeamScore</span> | <span class="text-danger">@match.AwayTeamScore</span></text>
+                        }
+                        @if (match.AwayTeamScore > match.HomeTeamScore)
+                        {
+                            <text><span class="text-danger">@match.HomeTeamScore</span> | <span class="text-success">@match.AwayTeamScore</span></text>
+                        }
 
-                    </tr>
-                }
+
+                    </td>
+
+                </tr>
+            }
 
             </tbody>
         </table>

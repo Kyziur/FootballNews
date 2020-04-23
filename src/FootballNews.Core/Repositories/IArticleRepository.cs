@@ -15,6 +15,7 @@ namespace FootballNews.Core.Repositories
         Task Create(Article article);
         Task Update(Article article);
         Task Delete(Article article);
-        
+        Task<bool> IsThereArticleOrCommentMadeByAuthor(string username);
+
     }
 }

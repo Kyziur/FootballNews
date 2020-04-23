@@ -30,7 +30,16 @@
                     <td>
                         <div class="btn-group text-white" role="group" aria-label="Actions">
                             <a class="btn btn-primary" asp-area="Admin" asp-controller="Manage" asp-action="Update" asp-route-id="@user.Id"><i class="fas fa-edit"></i>Edycja</a>
-                            <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Manage" asp-action="Delete" asp-route-id="@user.Id" data-confirm="Czy chcesz usunąć ten element?"><i class="far fa-trash-alt"></i>Usuń</a>
+                            @if (user.HasAnyArticle)
+                            {
+                                <a class="btn btn-danger delete disabled" title="Nie można usunąć użytkownika, który ma przypisany artykuł bądź odpowiadał na komentarze." asp-area="Admin" asp-controller="Manage" asp-action="Delete" asp-route-id="@user.Id" data-confirm="Czy chcesz usunąć ten element?"><i class="far fa-trash-alt"></i>Usuń</a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-danger delete" asp-area="Admin" asp-controller="Manage" asp-action="Delete" asp-route-id="@user.Id" data-confirm="Czy chcesz usunąć ten element?"><i class="far fa-trash-alt"></i>Usuń</a>
+
+                            }
                         </div>
                     </td>
 
@@ -52,3 +61,9 @@
             MaximumPageNumbersToDisplay = new int?(5)
         })
 </div>
+@section Scripts
+{
+    <script>
+        areYouSure();
+    </script>
+}

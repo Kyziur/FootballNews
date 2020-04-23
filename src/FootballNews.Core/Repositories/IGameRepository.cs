@@ -14,5 +14,6 @@ namespace FootballNews.Core.Repositories
         Task Update(Game game);
         Task Delete(Game game);
         Task<IEnumerable<Game>> GetUpcoming();
+        Task<IEnumerable<Game>> GetAlreadyPlayed();
     }
 }

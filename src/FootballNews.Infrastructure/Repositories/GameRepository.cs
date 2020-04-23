@@ -67,8 +67,22 @@ namespace FootballNews.Infrastructure.Repositories
 
         public async Task<IEnumerable<Game>> GetUpcoming()
         {
-            return await _context.Games.Include(x => x.AwayTeam).Include(x => x.HomeTeam)
+            return await _context.Games
+                .Include(x => x.Goals)
+                .ThenInclude(x => x.Team)
+                .Include(x => x.AwayTeam)
+                .Include(x => x.HomeTeam)
                 .Where(x => x.Date >= DateTime.Today).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Game>> GetAlreadyPlayed()
+        {
+            return await _context.Games
+                .Include(x => x.Goals)
+                .ThenInclude(x => x.Team)
+                .Include(x => x.AwayTeam)
+                .Include(x => x.HomeTeam)
+                .Where(x => x.Date < DateTime.UtcNow).ToListAsync();
         }
     }
 }

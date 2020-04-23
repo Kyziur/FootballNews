@@ -17,7 +17,7 @@ namespace FootballNews.WebApp.Components
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var upcomingMatches = await _gameRepository.GetUpcoming();
+            var upcomingMatches = await _gameRepository.GetAlreadyPlayed();
             var model = new UpcomingMatchesModel
             {
                 Matches = upcomingMatches.Select(x => new MatchModel
@@ -25,8 +25,9 @@ namespace FootballNews.WebApp.Components
                     HomeTeam = x.HomeTeam.Name,
                     AwayTeam = x.AwayTeam.Name,
                     Date = x.Date,
-
-                }).ToList().Where(x => x.Date < DateTime.UtcNow)
+                    HomeTeamScore = x.HomeTeamScore(),
+                    AwayTeamScore = x.AwayTeamScore()
+                }).ToList()
             };
 
             return View("EndMatches", model);
